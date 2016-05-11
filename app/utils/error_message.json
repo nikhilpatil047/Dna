@@ -1,0 +1,313 @@
+{
+	"error_messages" : {
+
+		"INCORRECT_PASSWORD" : {
+			"ERROR_CODE" : "E0001",
+			"ERROR_MESSAGE" : "Oops! Invalid credentials. Please try again."
+		},
+		"INACTIVE_USER_TOKEN_PRESENT" : {
+			"ERROR_CODE" : "E0002" ,
+			"ERROR_MESSAGE" : "There is already an account with this email. Resend verification email?"
+		},
+		"USER_NOT_EXIST" : {
+			"ERROR_CODE" : "E0003" ,
+			"ERROR_MESSAGE" : "Oops! We could not find this email address. Please check your credentials and try again."
+		},
+		"USER_DELETED" : {
+			"ERROR_CODE" : "E0004" ,
+			"ERROR_MESSAGE" : "Oops! Your account is deleted."
+		},
+
+		"EMAIL_EMPTY" : {
+			"ERROR_CODE" : "E0004" ,
+			"ERROR_MESSAGE" : "Email address can't be empty."
+		},
+
+		"USER_EXISTS" : {
+			"ERROR_CODE" : "E0005",
+			"ERROR_MESSAGE" : "There is already an account with this email. Proceed to login."
+		},
+
+		"FIELD_EMPTY" : {
+			"ERROR_CODE" : "E0006",
+			"ERROR_MESSAGE" : "Required field is empty."
+		},
+
+		"ACTIVATION_ACCOUNT" : {
+			"ERROR_CODE" : "E0007",
+			"ERROR_MESSAGE" : "Old account activation link has been sent."
+		},
+
+		"ACCOUNT_DELETED" : {
+			"ERROR_CODE" : "E0008",
+			"ERROR_MESSAGE" : "Oops! Your account is already deleted."
+		},
+		"ALREADY_ACTIVE" : {
+			"ERROR_CODE" : "E0009",
+			"ERROR_MESSAGE" : "Your account is already verified. Please proceed to login."
+		},
+		"TOKEN_NOT_EXISTS" : {
+			"ERROR_CODE" : "E0010",
+			"ERROR_MESSAGE" : "Oops! This link has expired."
+		},
+
+		"ACTIVE_NEW_ACCOUNT" : {
+			"ERROR_CODE" : "E0011",
+			"ERROR_MESSAGE" : "Thanks! Your account is verified successfully. You can now login to your account."
+		},
+
+		"INVALID_URL" : {
+			"ERROR_CODE" : "E0012",
+			"ERROR_MESSAGE" : "Something has gone wrong with URL."
+		},
+
+		"INVALID_SESSION" : {
+			"ERROR_CODE" : "E0013",
+			"ERROR_MESSAGE" : "Oops! Looks like your session has expired. Please login again."
+		},
+
+		"GROUP_CREATION_ERROR" : {
+			"ERROR_CODE" : "E0014",
+			"ERROR_MESSAGE" : "Group not created.Try again."
+		},
+		"REQUEST_PARAMETERS_MISSING" : {
+			"ERROR_CODE" : "E0015" ,
+			"ERROR_MESSAGE" : "Request parameters missing."
+		},
+		"ERROR_IN_DATABASE_OPERATION" : {
+			"ERROR_CODE" : "E0016" ,
+			"ERROR_MESSAGE" : "Error in database transitions."
+		},
+		"SESSION_NOT_EXIST" : {
+			"ERROR_CODE" : "E0017" ,
+			"ERROR_MESSAGE" : "Oops! Looks like your session has expired. Please login again."
+		},
+		"USER_UPDATION_ERROR" : {
+			"ERROR_CODE" : "E0018" ,
+			"ERROR_MESSAGE" : "User profile is not updated."
+		},
+		"SESSION_EXPIRED" : {
+			"ERROR_CODE" : "E0019" ,
+			"ERROR_MESSAGE" : "Session expired. Please login again."
+		},
+		"ERROR_FETCHING_USER_DETAILS" : {
+			"ERROR_CODE" : "E0020" ,
+			"ERROR_MESSAGE" : "Error fetching user details."
+		},
+		"ERROR_DELETEING_USER" : {
+			"ERROR_CODE" : "E0021" ,
+			"ERROR_MESSAGE" : "Unable to delete user account. Please try again after sometime."
+		},
+		"GROUP_UPDATION_ERROR" : {
+			"ERROR_CODE" : "E0022" ,
+			"ERROR_MESSAGE" : "Unable to update / delete group information."
+		},
+		"ERROR_DELETEING_GROUP" : {
+			"ERROR_CODE" : "E0023" ,
+			"ERROR_MESSAGE" : "Unable to delete group. Please try again after sometime."
+		},
+		"NEW_EMAIL_VERIFICATION_PENDING" : {
+			"ERROR_CODE" : "E0024" ,
+			"ERROR_MESSAGE" : "New Email Id verification process is pending."
+		},
+		"EMAIL_VERIFICATION_ERROR" : {
+			"ERROR_CODE" : "E0025" ,
+			"ERROR_MESSAGE" : "Email Verification Failed."
+		},
+		"INVALID_PASSWORD" : {
+			"ERROR_CODE" : "E0026" ,
+			"ERROR_MESSAGE" : "Old Password is Incorrect."
+		},
+		"ALREADY_MEMBER" : {
+			"ERROR_CODE" : "E0027",
+			"ERROR_MESSAGE" : "This user is already verified."
+		},
+		"FORGET_PASSWORD" : {
+			"ERROR_CODE" : "E0028",
+			"ERROR_MESSAGE" : "Forget Password Process Failed."
+		},
+		"TOKEN_GENERATION" : {
+			"ERROR_CODE" : "E0029",
+			"ERROR_MESSAGE" : "Token generation process Failed."
+		},
+		"ALREADY_EMAIL" : {
+			"ERROR_CODE" : "E0030",
+			"ERROR_MESSAGE" : "Email Already Sent.Please check your Email Id."
+		},
+		"TOKEN_VERIFICATION_FAILED" : {
+			"ERROR_CODE" : "E0030",
+			"ERROR_MESSAGE" : "Token Verification Failed."
+		},
+		"VERIFICATION_PENDING" : {
+			"ERROR_CODE" : "E0031",
+			"ERROR_MESSAGE" : "Verifcation process is pending."
+		},
+		"WRONG_PASSWORD" : {
+			"ERROR_CODE" : "E0032",
+			"ERROR_MESSAGE" : "Incorrect password. Please enter your correct password and retry."
+		},
+		"GROUP_UPDATION_ERROR" : {
+			"ERROR_CODE" : "E0033",
+			"ERROR_MESSAGE" : "Group updation is not completed."
+		},
+		"MEMBER_LEAVE" : {
+			"ERROR_CODE" : "E0034",
+			"ERROR_MESSAGE" : "Member successfully leave."
+		},
+		"ADMIN_LEAVE" : {
+			"ERROR_CODE" : "E0035",
+			"ERROR_MESSAGE" : "You are the only admin of group. Please assign admin permissions to other member before you leave group."
+		},
+		"GROUP_DELETED" : {
+			"ERROR_CODE" : "E0036",
+			"ERROR_MESSAGE" : "Group deleted successfully."
+		},
+		"RECORD_NOT_FOUND" : {
+			"ERROR_CODE" : "E0037",
+			"ERROR_MESSAGE" : "Record not found.Please try again."
+		},
+		"EMPTY_DOCUMENT_ARRAY" : {
+			"ERROR_CODE" : "E0038",
+			"ERROR_MESSAGE" : "Please select atleast one media/document to delete."
+		},
+		"UPLOADING_FAILED" : {
+			"ERROR_CODE" : "E0039",
+			"ERROR_MESSAGE" : "Documents uploading failed."
+		},
+
+		"INCORRECT_DOCUMENT_ID" : {
+			"ERROR_CODE" : "E0040",
+			"ERROR_MESSAGE" : "Provide valid Document Id."
+		},
+		"PERMISSION_DENIED" : {
+			"ERROR_CODE" : "E0041",
+			"ERROR_MESSAGE" : "Invalid User."
+		},
+		"PROJECT_DELETED" : {
+			"ERROR_CODE" : "E0042",
+			"ERROR_MESSAGE" : "Project deleted successfully."
+		},
+		"MEMBER_LEAVE_PROJECT" : {
+			"ERROR_CODE" : "E0044",
+			"ERROR_MESSAGE" : "You removed from the project."
+		},
+		"SINGLE_ADMIN_LEAVE_PROJECT" : {
+			"ERROR_CODE" : "E0045",
+			"ERROR_MESSAGE" : "You are the only admin of project. Please assign Admin permissions to other Member before you leave project."
+		},
+		"UNIQUE_PROJECT_IN_GROUP" : {
+			"ERROR_CODE" : "E0046",
+			"ERROR_MESSAGE" : "Project with the given name already exist in same group. Please, select different Project name."
+		},
+		"UNIQUE_GROUP_IN_SYSTEM" : {
+			"ERROR_CODE" : "E0047",
+			"ERROR_MESSAGE" : "Group with the given name already exist in the system. Please, select different Group name."
+		},
+		"PROJECT_NOT_EXIST" :  {
+			"ERROR_CODE" : "E0048",
+			"ERROR_MESSAGE" : "The project you are trying to verify does not exist."
+		},
+		"UNIQUE_ENTRY_IN_PROJECT" : {
+			"ERROR_CODE" : "E0049",
+			"ERROR_MESSAGE" : "Entry with the given name already exist in same project. Please, select different Entry name."
+		},
+		"DOCUMENT_NOT_EXIST" :  {
+			"ERROR_CODE" : "E0050",
+			"ERROR_MESSAGE" : "This document not exists in project."
+		},
+		"DOCUMENT_EXIST" :  {
+			"ERROR_CODE" : "E0051",
+			"ERROR_MESSAGE" : "This document already exists in project."
+		},
+		"INCORRECT_ENTRY_ID" : {
+			"ERROR_CODE" : "E0052",
+			"ERROR_MESSAGE" : "Provide valid Entry Id."
+		},
+		"ANNOTATION_FAILED" : {
+			"ERROR_CODE" : "E0053",
+			"ERROR_MESSAGE" : "Annotation saving process failed."
+		},
+		"DOCUMENT_RELATED_TO_ENTRY" : {
+			"ERROR_CODE" : "E0054",
+			"ERROR_MESSAGE" : "This document related to entry."
+		},
+		"INACTIVE_USER_TOKEN_NOT_PRESENT" : {
+			"ERROR_CODE" : "E0055" ,
+			"ERROR_MESSAGE" : "There is already a user signed up with this email and verification link has expired."
+		},
+		"INACTIVE_USER_LINK_UNEXPIRED" : {
+			"ERROR_CODE" : "E0056" ,
+			"ERROR_MESSAGE" : "Oops! Your account is not verified. Please verify account before logging in."
+		},
+		"INACTIVE_USER_LINK_EXPIRED" : {
+			"ERROR_CODE" : "E0057" ,
+			"ERROR_MESSAGE" : "User is not verified and verification link has expired."
+		},
+		"PROJECT_LINK_EXPIRED" : {
+			"ERROR_CODE" : "E0058",
+			"ERROR_MESSAGE" : "Project invitation link has expired."
+		},
+		"GROUP_LINK_EXPIRED" : {
+			"ERROR_CODE" : "E0059",
+			"ERROR_MESSAGE" : "Group invitation link has expired."
+		},
+		"GROUP_LINK_ACCEPTED" : {
+			"ERROR_CODE" : "E0060",
+			"ERROR_MESSAGE" : "You already accepted group invitation."
+		},
+		"PROJECT_LINK_ACCEPTED" : {
+			"ERROR_CODE" : "E0061",
+			"ERROR_MESSAGE" : "You already accepted project invitation."
+		},
+		"UNIQUE_ACTION_IN_PROJECT" : {
+			"ERROR_CODE" : "E0062",
+			"ERROR_MESSAGE" : "Action with the given name already exist in same project. Please, select different Action name."
+		},
+		"SELECT_ACTION_TO_DELETE" : {
+			"ERROR_CODE" : "E0063",
+			"ERROR_MESSAGE" : "Please select Action to delete."
+		},
+		"FORGOT_PASSWORD_LINK_EXPIRED" : {
+			"ERROR_CODE" : "E0064",
+			"ERROR_MESSAGE" : "Oops! Looks like your forgot password verification link has expired."
+		},
+		"ALREADY_VISITED" : {
+			"ERROR_CODE" : "E0065",
+			"ERROR_MESSAGE" : "Your already visited this link."
+		},
+		"NEW_EMAIL_VERIFICATION_LINK_EXPIRED" : {
+			"ERROR_CODE" : "E0066",
+			"ERROR_MESSAGE" : "Oops! Looks like your new email verification link has expired."
+		},
+		"NEW_EMAIL_USED_BY_SOMEONE" : {
+			"ERROR_CODE" : "E0067",
+			"ERROR_MESSAGE" : "Oops! Looks like there is another account with the same email address. Please check your address and retry."
+		},
+		"NOT_GROUP_MEMBER" : {
+			"ERROR_CODE" : "E0068",
+			"ERROR_MESSAGE" : "Oops! You can't delete this group."
+		},
+		"NOT_PERMISSION" : {
+			"ERROR_CODE" : "E0069",
+			"ERROR_MESSAGE" : "Oops! You need permission to perform this action."
+
+		},
+		"TOKEN_NOT_EXISTS_NO_ACCOUNT" : {
+			"ERROR_CODE" : "E0070",
+			"ERROR_MESSAGE" : "Oops! This link has expired."
+		},
+		"RESPONDED_NOTIFICATION" : {
+			"ERROR_CODE" : "E0071",
+			"ERROR_MESSAGE" : "You already responded to this notification."
+		},
+		"CONTENT_NOT_AVAILABLE" :{
+			"ERROR_CODE" : "E0072",
+			"ERROR_MESSAGE" : "This content is no longer available."
+		},	
+		"NOT_MEMBER_OF_PROJECT" : {
+			"ERROR_CODE" : "E0073",
+			"ERROR_MESSAGE" : "Oops! You can't access this project."
+
+		}
+	}
+}

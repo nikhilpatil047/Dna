@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DNA - Building Management System</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <div id="page-wrapper" style="margin:auto">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">User Registration</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            User Profile
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Building Name</label>
+											<p id="building_name">Register Building Names</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>First Name</label>
+                                            <input class="form-control">
+                                        </div> 
+										<div class="form-group">
+                                            <label>Last Name</label>
+                                            <input class="form-control">
+                                        </div>
+										<div class="form-group">
+											<label>User Name</label>
+											<div class="form-group input-group">
+												<span class="input-group-addon">@</span>
+												<input type="text" class="form-control" placeholder="Username">
+											</div>
+										</div>
+                                        <div class="form-group">
+                                            <label>Room No : </label>
+											<select class="form-control" style="width:10%; display:inline-block;">
+                                                <option>A</option>
+                                                <option>B</option>
+                                                <option>C</option>
+                                                <option>D</option>
+                                                <option>E</option>
+                                            </select>
+											<input type="number" class="form-control" placeholder="room number" style="display:inline-block; padding-left:15px; width:20%">
+                                        </div>
+										<div class="form-group">
+											<label>Contact Number :</label>
+											<div class="form-group input-group">
+												<span class="input-group-addon">+91</span>
+												<input type="number" class="form-control" placeholder="contact number">
+											</div>
+										</div>
+										<div class="form-group">
+                                            <label>Notification Option : </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>Only Email
+                                                </label>
+												<div class="radio-inline">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Only SMS 
+                                                </label>
+												<div class="radio-inline">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">Both
+                                                </label>
+                                            </div>
+                                        </div>
+										<div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">I accept all terms and conditions.
+                                                </label>
+                                            </div>
+										</div>
+                                    </form>
+                                </div>
+                                						
+                                <!-- /.col-lg-6 (nested) -->
+								<div class="col-lg-12">
+                                    <center>
+                                    <form role="form">
+										<button type="submit" class="btn btn-default">Submit Button</button>
+										<button type="reset" class="btn btn-default">Reset Button</button>
+									</form></center>
+								</div>
+								
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+#Ignore these directories
+
+node_modules
+npm-debug.log
+log
+ink
+uploads
+
+#ignore these files
+
+*.log
+*.txt
+app/web/config/config.js
+app/images
+app/index.html
