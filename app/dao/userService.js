@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var path = require('path');
 var appUtils = require('../utils/appUtils.js');
 var constants = require('../utils/constants.js');
+var responseUtils = require('../utils/responseUtils');
 
 // Global module level variables.
 var SERVICE_NAME = 'UserManagementServices: ';
@@ -82,4 +83,64 @@ function signup(req, res, callback) {
 	logger.info('<<<<<<<<<<<<<<' + SERVICE_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
 
+//To fetch User
+function getUserByUserName(uname, callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserByEmailId Method >>>>>>>>>>>>>>>>>>>>>"+ uname);
+	//var name = params.useremail ;
+	model.Users.findOne({ username : uname }, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+var userLogin = function(request, callback) {	
+	var encPassword;
+	if(!appUtils.isBlank(request.body.payload.password)) {
+		encPassword = encryptPassword(request.body.payload.password); 
+	}
+	var userName = request.body.payload.userName;
+	getUserByUserName(userName,function(err,resultSet) {	
+ 
+		var resp = responseUtils.constructResponseJson();
+		
+		if(err === null) {
+			if(resultSet === null){
+				resp.payload.status = "ERROR";
+				resp.payload.responseCode = appUtils.getErrorMessage("USER_NOT_EXIST").ERROR_CODE;
+				resp.payload.responseBody.message = appUtils.getErrorMessage("USER_NOT_EXIST").ERROR_MESSAGE;
+
+			}else{
+				if(encPassword === resultSet.password){
+					resp.payload.status = "SUCCESS";
+					resp.payload.responseCode = "200";
+					resp.payload.responseBody.userDetails = {};
+					request.session = {};
+					request.session["userName"] = request.body.payload.userName;
+					request.session["sessionId"] = appUtils.generateToken();
+					resp.payload.responseBody.userDetails['firstName'] = resultSet.first_name;
+					resp.payload.responseBody.userDetails['lastName'] = resultSet.last_name;
+					resp.payload.responseBody.userDetails['address'] = resultSet.address;
+					resp.payload['sessionId'] = request.session.sessionId;
+					console.log(JSON.stringify(request.session));
+				}else{
+					resp.payload.status = "ERROR";
+					resp.payload.responseCode = appUtils.getErrorMessage("INCORRECT_PASSWORD").ERROR_CODE;
+					resp.payload.responseBody.message = appUtils.getErrorMessage("INCORRECT_PASSWORD").ERROR_MESSAGE;
+				}
+
+			}
+		}		
+		
+		callback(resp);
+	});
+}
 module.exports.signup = signup;
+module.exports.userLogin = userLogin;

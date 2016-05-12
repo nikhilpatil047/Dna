@@ -3,7 +3,7 @@
  * - Validates whether a path exists in a Json Object hierarchy.
  * - Returns a value from a Json Object at specified path.
  *
- * @author Shashikant.
+ * @author Nikhil.
  */
 
 'use strict';

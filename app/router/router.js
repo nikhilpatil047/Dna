@@ -6,6 +6,7 @@ var express = require('express');
 var router = express.Router();
 var responseUtils = require('../utils/responseUtils.js');
 var validationUtils = require('../utils/validationUtils.js');
+var jsonUtils = require('../utils/jsonUtils.js');
 var userService = require('../dao/userService.js');
 var constants = require('../utils/constants.js');
 var async = require('async');
@@ -124,43 +125,11 @@ function authentication (requestParam, resp) {
 			// Function to authenticate users. 
 			function authenticateUser(requestParams, authenticateCallback) {					
 
-				var email = jsonUtils.getPath(requestParams, 'userEmail');
+				var userName = jsonUtils.getPath(requestParams, 'userName');
 				var password = jsonUtils.getPath(requestParams, 'password');					
 
-				userSession.userLogin(requestParam, function(respo) {
-					// Check if user is logged in for the first time.						
-					if(respo.payload.responseBody.userDetails && respo.payload.responseBody.userDetails.isFirstLogin) {							
-						
-						// Create self group.
-						
-						var	payload =  {
-							groupName : respo.payload.responseBody.userDetails.firstName + " " + respo.payload.responseBody.userDetails.lastName,
-							groupPhoto : null,
-							createdBy : respo.payload.responseBody.userDetails.userId,//respo.payload.responseBody.userDetails.firstName + " " + respo.payload.responseBody.userDetails.lastName,
-							updatedBy : respo.payload.responseBody.userDetails.userId,//respo.payload.responseBody.userDetails.firstName + " " + respo.payload.responseBody.userDetails.lastName,
-							self_group : true,
-							groupDescription : null,
-							groupMembers : [],
-							deleted : false ,
-							last_updated_date : appUtils.currentDate() ,
-							created_date : appUtils.currentDate()
-						};
-						payload['protocol'] = requestParam.protocol;
-						payload['host'] = requestParam.get('host');
-						var selfGroupDocument = {"body": {"payload" :payload}};
-						groupService.createGroupService(selfGroupDocument,function(error, result) {
-							if(result) {
-								// Reset the isFirstLogin flag to false.
-								userDao.updateUser(respo.payload.responseBody.userDetails.userId, {"is_first_login" : false}, function(error, rep)  {
-									authenticateCallback(null, respo);
-								});
-							}else {
-								authenticateCallback(null, respo);
-							}
-						});
-					}else {
-						authenticateCallback(null, respo);
-					}						
+				userService.userLogin(requestParam, function(respo) {
+					authenticateCallback(null, respo);					
 				});
 			}
 			
@@ -168,7 +137,9 @@ function authentication (requestParam, resp) {
 
 			// Construct success response object and send back to the client.
 			if(response.payload.responseCode != '200') {
-				requestParam.session.destroy();
+				if(requestParam.session){
+					requestParam.session.destroy();
+				}	
 			}
 
 			resp.send(response);
@@ -182,5 +153,70 @@ function authentication (requestParam, resp) {
 	}
 	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
+
+/*
+ * Logout function to destroy session.
+ * 
+ */
+function logout(requestParams, response) {
+	var METHOD_NAME = 'Logout()';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	logger.debug(JSON.stringify(requestParams.body));
+	
+	// Final response structure.	
+	var finalResponse = responseUtils.constructResponseJson();
+
+	// Call to DAO layer to check and destory session.
+	userDao.logout(requestParams.body.header.sessionId, function(error, resp) {
+
+		if (error) {
+			// Massage & send Error response on unsuccessful logout.
+			finalResponse.status = constants.STATUS_ERROR;
+			finalResponse.payload.responseCode = error.code;
+			finalResponse.payload.responseBody['message'] = error.message;
+			response.send(finalResponse);
+		}else {
+			// Massage & send success response on successful logout.
+			finalResponse.status = constants.STATUS_SUCCESS;
+			finalResponse.payload.responseCode = constants.RESPONSE_SUCCESS;
+			finalResponse.payload.responseBody['message'] = constants.LOGOUT_SUCCESSFUL;
+			response.send(finalResponse);
+		}			
+	});
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/* 
+ * Function to check if session is valid or not.
+ * Query Param : sessionId
+ */
+function isValidSession(request, response) {
+	var METHOD_NAME = "isValidSession();"
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	// Final response structure.	
+	var finalResponse = responseUtils.constructResponseJson();
+
+	logger.debug("sessionId : " + request.query.sessionId);
+
+	try {
+		// Check if session is valid or not.
+		sessionDao.validSession(request.query.sessionId, function(error, res) {						
+			if(res) {
+				finalResponse.payload.responseCode = constants.RESPONSE_SUCCESS;
+				finalResponse.payload.status = constants.STATUS_SUCCESS;
+				finalResponse.payload.responseBody['sessionId'] = request.query.sessionId;
+				response.send(finalResponse);
+			}else {							
+				finalResponse.payload.responseCode = error.code;
+				finalResponse.payload.status = constants.STATUS_ERROR;
+				finalResponse.payload.responseBody['sessionId'] = null;
+				response.send(finalResponse);
+			}
+		});
+	}catch(error) {
+		logger.debug("Exception Thrown" + JSON.stringify(error));
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+}
 
 module.exports = router;
