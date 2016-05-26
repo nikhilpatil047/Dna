@@ -3,45 +3,108 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-    <title>DNA - Building Management System</title>
+	<title>DNA - Building Management System</title>
 
-    <link rel="stylesheet" href="./css/login_style.css">
+	<link rel="stylesheet" href="./css/login_style.css">
 
-    <!-- Custom Fonts -->
-    <link href="./lib/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- Custom Fonts -->
+	<link href="./lib/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-    <div class="wrapper">
-        <form class="login">
-            <p class="title">Log in</p>
-            <div class="form-group">
-                <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-            </div>
-            <!-- <i class="fa fa-user"></i> -->
-            <div class="form-group">
-                <input class="form-control" placeholder="Password" name="password" type="password" value="">
-            </div>
-            <!-- <i class="fa fa-key"></i> -->
-            <a href="#">Forgot your password?</a>
-            <a href="application.html">
-            <!-- <button> -->
-                <span class="state">Log in</span>
-            <!-- </button> -->
-            </a>
-            </form>
-            <footer><a href="./views/registration.html">Register</a></footer>
-        </p>
-    </div>
+	<div class="wrapper">
+		<form class="login">
+			<p class="title">Log in</p>
+			<div id="errorMsg"></div>
+			<div class="form-group">
+				<input class="form-control" placeholder="Username" id="username" type="text" autofocus>
+			</div>
+			<!-- <i class="fa fa-user"></i> -->
+			<div class="form-group">
+				<input class="form-control" placeholder="Password" id="password" type="password" value="">
+			</div>
+			<!-- <i class="fa fa-key"></i> -->
+			<a href="#">Forgot your password?</a>
+			<a href="" onclick="login(event)">
+			<!-- <button> -->
+				<span class="state">Log in</span>
+			<!-- </button> -->
+			</a>
+			</form>
+			<footer><a href="./views/registration.html">Register</a></footer>
+		</p>
+	</div>
+	<script type="text/javascript">
+		function login(event) {
+			var authdata = {
+				  "header": {
+				  },
+				  "payload": {
+					"userName" : $("#username")[0].value,
+					"password": $("#password")[0].value
+					}
+				};
+			$.ajax({
+				type : 'POST',
+				url : '/login',
+				data : JSON.stringify(authdata), // '{"name":"' + model.name + '"}',
+				dataType : 'text',
+				processData : false,
+				contentType : 'application/json',
+				success : successCB,
+				error : errorCB,
+				timeout : 5000
+			});
+			event.preventDefault();
+		};
+		function successCB(data, status, header) {
+			console.log(header);
+			var data = JSON.parse(data);
+			if(data.payload.status == 'ERROR'){
+				//alert(data.payload.responseBody.message);
+				$("#errorMsg")[0].innerHTML = "<small class='redTxt'>"+data.payload.responseBody.message+"</small>";
+				$("#username")[0].value = '';
+				$("#password")[0].value = '';
+			}else {
+				window.location = 'application.html';
+			}
+		};
+		function errorCB(res, status, ex) {
+			var message;
+			var myStatusErrorMap = {
+				'400' : "Server understood the request but request content was invalid.",
+				'401' : "Invalid Username or Password. Please Try Again.",
+				'403' : "Forbidden resouce can't be accessed.",
+				'500' : "Internal Server Error.",
+				'503' : "Service Unavailable."
+			};
+			if (res.status) {
+				message =myStatusErrorMap[res.status];
+				if(!message){
+					message="Unknown Error " + ex;
+				}
+			}else if(ex=='timeout'){
+				message="Request Timed out. Unable to contact Authentication Server.";
+			}else if(ex=='abort'){
+				message="Request was aborted by the server.";
+			}else {
+				message="Invalid Username or Password " + ex + ", " + status ;
+			}
+			//console.log(res);
+			console.log(message);
+			$("#errorMsg")[0].innerHTML = message;
+			$("#password")[0].value = "";
+		};
+	</script>
 
-    <script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
-    
+	<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+	
 </body>
 </html>

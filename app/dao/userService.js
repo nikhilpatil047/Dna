@@ -53,10 +53,11 @@ function signup(req, res, callback) {
 		last_name : null,		
 		password : password,
 		profile_photo : null,
+		user_type: req.usertype,
 		building_name: req.buildingName || null,
 		building_website: req.buildingWebsite || null,
 		address: req.address,
-		security_question: {question: req.question || null, answer: req.answer || null },
+		security_question: req.securityquestion || null,
 		notificationTypes : {
 			forgotPassword : true
 		},		

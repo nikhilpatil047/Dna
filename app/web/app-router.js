@@ -26,6 +26,10 @@ app.config(['$routeProvider',
 	      templateUrl: 'views/flot.html' ,
 	      controller: 'flotController' 
 	    }).
+	    when('/registration', {
+	      templateUrl: 'views/registration.html' ,
+	      controller: 'registrationCtrl' 
+	    }).
 	    when('/morris', {
 	      templateUrl: 'views/morris.html' ,
 	      controller: 'morrisController' 
