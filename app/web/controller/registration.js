@@ -5,10 +5,11 @@
  *	View : sign-in.html
  *	Author : Nikhil
  */
-app.controller('registrationCtrl',function($scope, $cookies, $location, $rootScope, $log, HttpCommunicationUtil){
+app.controller('registrationCtrl',function($scope, $cookies, $location, $rootScope, $log, $timeout, HttpCommunicationUtil){
 	var ModuleName = "registrationCtrl";
 	$rootScope.appTitle = "Registration";
 
+	$scope.passMatch = true;
 	$scope.newForm = {
 		sQuestion: "-- Select Security Question --",
 		usertype: "user"
@@ -41,10 +42,18 @@ app.controller('registrationCtrl',function($scope, $cookies, $location, $rootSco
 						sQuestion: "-- Select Security Question --",
 						usertype: "user"
 					};
-					$timeout(function() {$scope.resTxt ='';}, 1000);
+					$timeout(function() {$scope.resTxt ='';}, 3000);
                 }       
             },function(err){
                 $log.debug(JSON.stringify(err));
          });
+	}
+
+	$scope.checkPass = function(){
+		if($scope.newForm.password != $scope.newForm.repassword) {
+			$scope.passMatch = false;
+		} else {
+			$scope.passMatch = true;
+		}	
 	}
 });

@@ -35,6 +35,7 @@ var userSchema = Schema ({
 	profile_photo: String, // We can store the path or base64 for the image.
 	building_name: String,
 	building_website: String,
+	user_type: String,
 	address: String,
 	security_question: {},
 	notificationTypes : { // for now we kept this but if we make it as feature level notification.
