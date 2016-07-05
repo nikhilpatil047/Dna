@@ -39,7 +39,7 @@ app.use(allowCrossDomain);
 
 // Session middleware
 app.use(session({
-      cookie: { maxAge: 15 * 24 * 60 * 60 * 1000, path : '/user/login'} ,
+      cookie: { maxAge: 15 * 24 * 60 * 60 * 1000, path : '/login'} ,
       secret: "Dna" ,
       saveUninitialized: false,
      resave: false,

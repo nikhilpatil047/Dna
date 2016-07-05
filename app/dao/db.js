@@ -45,8 +45,10 @@ var userSchema = Schema ({
 });
 
 var sessionSchema = Schema ({
-
-
+	// session : {
+	// 	sessionId: { type: String, required : true, unique : true },
+	// 	username: String
+	// }
 });
 
 module.exports.mongoConnection = db;

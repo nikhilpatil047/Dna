@@ -64,12 +64,12 @@ app.service('authService', function(HttpCommunicationUtil, $location, $log, $coo
        	requestUtil.data.header.sessionId = logoutData.sessionId; 
        	requestUtil.data.payload.userid = logoutData.userId;
 
-       	HttpCommunicationUtil.doPost('/user/logout',requestUtil.data,function(data, status) {
+       	HttpCommunicationUtil.doPost('/logout',requestUtil.data,function(data, status) {
 			if (data.payload.status === "ERROR") {
 				var err = {"status":data.payload.status, "message":data.payload.responseBody.message};
 				callback(err, null);
 			}else {
-				userService.clearCookies();
+				$cookies.remove('session');
 				callback(null, data);
 			}		
 		},function(err){

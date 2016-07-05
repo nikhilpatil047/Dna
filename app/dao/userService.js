@@ -102,6 +102,7 @@ function getUserByUserName(uname, callback) {
     	}
  	}); 
 };
+
 var userLogin = function(request, callback) {	
 	var encPassword;
 	if(!appUtils.isBlank(request.body.payload.password)) {
@@ -123,14 +124,13 @@ var userLogin = function(request, callback) {
 					resp.payload.status = "SUCCESS";
 					resp.payload.responseCode = "200";
 					resp.payload.responseBody.userDetails = {};
-					request.session = {};
-					request.session["username"] = request.body.payload.username;
+					request.session["username"] = request.body.payload.userName;
 					request.session["sessionId"] = appUtils.generateToken();
 					resp.payload.responseBody.userDetails['firstName'] = resultSet.first_name;
 					resp.payload.responseBody.userDetails['lastName'] = resultSet.last_name;
 					resp.payload.responseBody.userDetails['address'] = resultSet.address;
-					resp.payload['sessionId'] = request.session.sessionId;
-					console.log(JSON.stringify(request.session));
+					resp.payload['session'] = request.session;
+					console.log("session >>> "+JSON.stringify(request.session));
 				}else{
 					resp.payload.status = "ERROR";
 					resp.payload.responseCode = appUtils.getErrorMessage("INCORRECT_PASSWORD").ERROR_CODE;
@@ -143,5 +143,35 @@ var userLogin = function(request, callback) {
 		callback(resp);
 	});
 }
+
+//To Delete session etry and ogout user
+function logout(sessionId, callback) {
+	logger.debug("USER DAO : " + sessionId);
+
+	model.Session.remove({"session.sessionId" : sessionId }, function(err,result) {
+		if (err) {
+			logger.debug(JSON.stringify(err));
+			var errorMessage = {
+				"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+				"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+			}
+		   	callback(errorMessage, null);
+		}
+		// Parse json result set.
+		result = JSON.parse(result);		
+
+		// Check if session exist or not.
+		if(result.n == 1) {
+		   	callback(null,true);
+		} else {
+			var errorMessage = {
+				"code" : appUtils.getErrorMessage("SESSION_NOT_EXIST").ERROR_CODE,
+				"message" : appUtils.getErrorMessage("SESSION_NOT_EXIST").ERROR_MESSAGE
+			}
+		   	callback(errorMessage, null);
+		}
+ 	});  
+}
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
+module.exports.logout = logout;

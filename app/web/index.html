@@ -73,6 +73,14 @@
 				$("#username")[0].value = '';
 				$("#password")[0].value = '';
 			}else {
+				var obj = {};
+				obj.sessionId = data.payload.session.sessionId;
+				obj.user = data.payload.responseBody.userDetails;
+				obj.user.userName = data.payload.session.username;
+				var expireDate = new Date();
+  				expireDate.setDate(expireDate.getDate() + 15);	
+  				var expire = 'expires'+ '=' + expireDate;		
+				document.cookie ='session' + '=' + JSON.stringify(obj) + ';' + expire;
 				window.location = 'application.html';
 			}
 		};

@@ -33,7 +33,10 @@ app.config(['$routeProvider',
 	    when('/morris', {
 	      templateUrl: 'views/morris.html' ,
 	      controller: 'morrisController' 
-	    });
+	    })
+	    .when('/logout', {
+		templateUrl : '/index.html',
+	});
 	   
 	}],
 

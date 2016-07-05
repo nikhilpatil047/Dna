@@ -14,6 +14,7 @@ var async = require('async');
 
 router.post('/login', authentication);
 router.post('/createuser', createuser);
+router.post('/logout', logout);
 
 
 /**
@@ -129,12 +130,13 @@ function authentication (requestParam, resp) {
 				var password = jsonUtils.getPath(requestParams, 'password');					
 
 				userService.userLogin(requestParam, function(respo) {
+					console.log("inauth >>>")
 					authenticateCallback(null, respo);					
 				});
 			}
 			
 		], function (error, response) {
-
+			
 			// Construct success response object and send back to the client.
 			if(response.payload.responseCode != '200') {
 				if(requestParam.session){
@@ -167,7 +169,7 @@ function logout(requestParams, response) {
 	var finalResponse = responseUtils.constructResponseJson();
 
 	// Call to DAO layer to check and destory session.
-	userDao.logout(requestParams.body.header.sessionId, function(error, resp) {
+	userService.logout(requestParams.body.header.sessionId, function(error, resp) {
 
 		if (error) {
 			// Massage & send Error response on unsuccessful logout.

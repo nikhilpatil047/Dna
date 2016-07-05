@@ -7,11 +7,15 @@
 	    <!-- Bootstrap Core CSS -->
 	    <link href="./lib/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-	    <!-- MetisMenu CSS -->
-	    <link href="./lib/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+	    <!-- Timeline CSS -->
+    	<link href="./css/dist/css/timeline.css" rel="stylesheet">
 
 	    <!-- Custom CSS -->
 	    <link href="./css/dist/css/sb-admin-2.css" rel="stylesheet">
+
+	    <!-- Morris Charts CSS -->
+    	<link href="./css/dist/css/morris.css" rel="stylesheet">
+
 
 	    <!-- Custom Fonts -->
 	    <link href="./lib/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,7 +34,7 @@
 	</head>
 	<body ng-app="Dnaapp">
 		<title ng-bind="appTitle"></title>
-		<div id="wrapper">
+		<div id="wrapper" ng-controller="appController">
 
 	        <!-- Navigation -->
 	        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -47,7 +51,7 @@
 
 	            <ul class="nav navbar-top-links navbar-right">
 	                <li class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <a class="dropdown-toggle" data-toggle="dropdown" >
 	                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
 	                    </a>
 	                    <ul class="dropdown-menu dropdown-messages">
@@ -98,7 +102,7 @@
 	                </li>
 	                <!-- /.dropdown -->
 	                <li class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <a class="dropdown-toggle" data-toggle="dropdown">
 	                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
 	                    </a>
 	                    <ul class="dropdown-menu dropdown-tasks">
@@ -177,7 +181,7 @@
 	                </li>
 	                <!-- /.dropdown -->
 	                <li class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <a class="dropdown-toggle" data-toggle="dropdown">
 	                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
 	                    </a>
 	                    <ul class="dropdown-menu dropdown-alerts">
@@ -237,7 +241,7 @@
 	                </li>
 	                <!-- /.dropdown -->
 	                <li class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                    <a class="dropdown-toggle" data-toggle="dropdown">
 	                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
 	                    </a>
 	                    <ul class="dropdown-menu dropdown-user">
@@ -246,7 +250,7 @@
 	                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
 	                        </li>
 	                        <li class="divider"></li>
-	                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+	                        <li><a href="" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 	                        </li>
 	                    </ul>
 	                    <!-- /.dropdown-user -->
@@ -336,7 +340,8 @@
 		<script src="./lib/prototype.js"></script>
 		<script src="./lib/calendarview.js"></script>
 		<script src="./lib/aes.js"></script>
-
+		<!-- Bootstrap Core JavaScript -->
+    	<script src="./lib/bower_components/bootstrap-3.3.4-dist/js/bootstrap.min.js"></script>
 
 		<!-- ************************* Image Annotation *******************************-->
 
@@ -352,9 +357,6 @@
 		<script src="./lib/angular-touch.min.js"></script>
 		<script src="./lib/ng-tags-input.min.js"></script>
 		<!-- // <script src="./lib/bower_components/annotation.js"></script> -->
-
-		<!-- Metis Menu Plugin JavaScript -->
-	    <script src="./lib/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
 	    <!-- Morris Charts JavaScript -->
 	    <script src="./lib/bower_components/raphael/raphael-min.js"></script>
@@ -379,12 +381,14 @@
 		<!-- ************************ Controllers ************************ -->
 		<script src="./common.js"></script>
 		<script src="./Controller/dashboard.js"></script>
+		<script src="./Controller/appController.js"></script>
 		<script src="./Controller/invoice.js"></script>
 		<script src="./Controller/tables.js"></script>
 		<script src="./Controller/flot.js"></script>
 		<script src="./Controller/registration.js"></script>
 		<script src="./Controller/morris.js"></script>
 		<script src="./utils/HttpCommunicationUtil.js"></script>
+		<script src="./utils/requestUtil.js"></script>
 
 		<!-- @@@@@@@@@ -->
 		<script type="text/javascript">
