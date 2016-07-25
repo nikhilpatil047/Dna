@@ -1,0 +1,86 @@
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-9">
+            <h1 class="page-header">Hello {{user.userName}}</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-user fa-fw"></i> About
+                    <div class="pull-right" ng-init='edit = false'>
+                        <div class="custom_clickable" ng-click='edit = true'><i class="fa fa-pencil fa-fw" ></i></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <tr>
+                            <td><label>First Name : </label></td>
+                            <td ng-if="!edit">{{userForm.fName}}</td>
+                            <td><input ng-if="edit" class="form-control" type="text" id="fName" ng-model="userForm.fName"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Last Name : </label></td>
+                            <td ng-if="!edit">{{userForm.lName}}</td>
+                            <td><input ng-if="edit" class="form-control" type="text" id="lName" ng-model="userForm.lName"></td>
+                        </tr> 
+                        <tr>
+                            <td><label>Email Id : </label></td>
+                            <td ng-if="!edit">{{userForm.email}}</td>
+                            <td><input ng-if="edit" class="form-control" type="text" id="email" ng-model="userForm.email"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Mobile Number : </label></td>
+                            <td ng-if="!edit">{{userForm.contact}}</td>
+                            <td><input ng-if="edit" class="form-control" type="text" id="contact" ng-model="userForm.contact"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Date of Birth : </label></td>
+                            <td ng-if="!edit">{{userForm.dob}}</td>
+                            <td><input ng-if="edit" class="form-control" type="text" id="dob" ng-model="userForm.dob"></td>
+                        </tr>
+                    </table>
+                    <button ng-if="edit && userForm.isEmpty" type="submit" ng-click="addUserDetails()" class="btn btn-primary" ng-click="$parent.edit = false">Add Details</button>
+                    <button ng-if="edit && !userForm.isEmpty" type="submit" ng-click="updateUserDetails()" class="btn btn-primary" ng-click="$parent.edit = false">Submit</button>
+                    <button ng-if="edit" class="btn btn-primary" ng-click="$parent.edit = false">Cancel</button>
+            </div>
+            </div>
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <i class="fa fa-user fa-fw"></i> Other Details
+                    
+                </div>
+                <div class="panel-body">
+                    
+                    <table>
+                        <tr>
+                            <td><label>Building Name : </label></td>
+                            <td><label>{{ user.buildingName }}</label></td>
+                        </tr>
+                        <tr>
+                            <td><label>Building Website : </label></td>
+                            <td><label>{{ user.buildingWebsite }}</label></td>
+                        </tr>
+                        <tr>
+                            <td><label>Flat Number : </label></td>
+                            <td><label>D/69 </label></td>
+                        </tr>
+                        <tr>
+                            <td><label>Building Address : </label></td>
+                            <td><label>{{ user.address }}</label></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-8 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->

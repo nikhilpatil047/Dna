@@ -29,8 +29,6 @@ global.ObjectId = mongoose.Types.ObjectId;
 var userSchema = Schema ({
 
 	username: { type : String, required : true, unique : true },
-	first_name: String,
-	last_name : String,
 	password: String, // encrypted value will be stored
 	profile_photo: String, // We can store the path or base64 for the image.
 	building_name: String,
@@ -44,6 +42,16 @@ var userSchema = Schema ({
 	created_date : Date
 });
 
+var userDetailSchema = Schema ({
+	userid: String,
+	first_name: String,
+	last_name : String,
+	email: String,
+	contactno: String,
+	birth_date: Date,
+	flatno: String
+});
+
 var sessionSchema = Schema ({
 	// session : {
 	// 	sessionId: { type: String, required : true, unique : true },
@@ -53,4 +61,5 @@ var sessionSchema = Schema ({
 
 module.exports.mongoConnection = db;
 module.exports.Users = mongoose.model('Users',userSchema,'user');
+module.exports.userDetail = mongoose.model('userDetail',userDetailSchema,'userdetail');
 module.exports.Session = mongoose.model('Session',sessionSchema,'session');

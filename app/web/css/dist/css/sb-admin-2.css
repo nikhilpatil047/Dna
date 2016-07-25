@@ -132,7 +132,7 @@ body {
         z-index: 1;
         position: absolute;
         width: 250px;
-        margin-top: 51px;
+        /* margin-top: 51px; */
     }
 
     .navbar-top-links .dropdown-messages,
@@ -352,9 +352,19 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
-.redTxt{
-    color: #f84545 !important;
+/* Settings */
+.status_resetPwd
+{
+	color:#ff0000;
+    margin-bottom: 10px;
 }
-.greenTxt{
-    color: #3cb98c;
+.custom_clickable:hover
+{
+    background: #d9d9d9;
+    border-radius: 5px;
+}
+.custom_clickable
+{
+    cursor:pointer;
+    background:transparent;
 }

@@ -48,9 +48,7 @@ function signup(req, res, callback) {
 
 	// Initializing variables from request body and setting default values.
 	var document = {
-		username : req.username || null ,
-		first_name : null,
-		last_name : null,		
+		username : req.username || null ,		
 		password : password,
 		profile_photo : null,
 		user_type: req.usertype,
@@ -126,9 +124,10 @@ var userLogin = function(request, callback) {
 					resp.payload.responseBody.userDetails = {};
 					request.session["username"] = request.body.payload.userName;
 					request.session["sessionId"] = appUtils.generateToken();
-					resp.payload.responseBody.userDetails['firstName'] = resultSet.first_name;
-					resp.payload.responseBody.userDetails['lastName'] = resultSet.last_name;
+					resp.payload.responseBody.userDetails['id'] = resultSet._id;
 					resp.payload.responseBody.userDetails['address'] = resultSet.address;
+					resp.payload.responseBody.userDetails['buildingWebsite'] = resultSet.building_website;
+					resp.payload.responseBody.userDetails['buildingName'] = resultSet.building_name;
 					resp.payload['session'] = request.session;
 					console.log("session >>> "+JSON.stringify(request.session));
 				}else{
@@ -172,6 +171,57 @@ function logout(sessionId, callback) {
 		}
  	});  
 }
+
+//To fetch User Details
+function getUserById(uId, callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
+	//var name = params.useremail ;
+	model.userDetail.findOne({ userid : uId }, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+
+//To save user details
+function saveUserDetail(document,callback) {
+	document.save(function(err) {
+		logger.debug("In saveUser method");
+		if(err) {
+				logger.error(" In saveUser  method >> error >> " + err);
+				//callback(err,null);
+		} 
+		callback(null,document);
+	});
+};
+
+//To update User Details.
+function updateUser(userID, queryString ,callback ) {
+	logger.debug("<<<<<<<<<<<<<<<<<<<In updateUser  Method>>>>>>>>>>>>>>>>>>>>>" + JSON.stringify(queryString));
+	model.userDetail.update( { userid : new ObjectId(userID)}, { $set :  queryString },function(err,result) {
+		if (err) {
+			logger.error(err.message);
+			console.log(">>>>"+ JSON.stringify(err));
+			callback(errorMessage, null);
+		}
+		if(result.n == 1) {
+			callback(null,true);
+		}else {	
+			callback(appUtils.getErrorMessage("USER_UPDATION_ERROR").ERROR_CODE, null);
+		}
+	});
+}
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
 module.exports.logout = logout;
+module.exports.getUserById = getUserById;
+module.exports.saveUserDetail = saveUserDetail;
+module.exports.updateUser = updateUser;
