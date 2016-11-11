@@ -59,6 +59,17 @@ var buildingSchema = Schema ({
 	active: Boolean
 });
 
+var taxInvoiceSchema = Schema ({ 
+	building_id : String,
+	month: String,
+	tax: []
+});
+
+var taxTemplateSchema = Schema ({ 
+	building_id : String,
+	template: {}
+});
+
 var sessionSchema = Schema ({
 	// session : {
 	// 	sessionId: { type: String, required : true, unique : true },
@@ -70,4 +81,6 @@ module.exports.mongoConnection = db;
 module.exports.Users = mongoose.model('Users',userSchema,'user');
 module.exports.userDetail = mongoose.model('userDetail',userDetailSchema,'userdetail');
 module.exports.building = mongoose.model('building',buildingSchema,'building');
+module.exports.taxTemplate = mongoose.model('taxTemplate',taxTemplateSchema,'taxtemplate');
+module.exports.taxInvoiceSchema = mongoose.model('taxInvoice',taxInvoiceSchema,'taxinvoice');
 module.exports.Session = mongoose.model('Session',sessionSchema,'session');

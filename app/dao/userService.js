@@ -234,8 +234,8 @@ function saveBuildingDetail(document,callback) {
 
 //To update Building Details.
 function updateBuilding(id, queryString ,callback ) {
-	logger.debug("<<<<<<<<<<<<<<<<<<<In updateBuilding  Method>>>>>>>>>>>>>>>>>>>>>" + userID + " >> " + JSON.stringify(queryString));
-	model.building.update( { id : new ObjectId(id)}, { $set :  queryString },function(err,result) {
+	logger.debug("<<<<<<<<<<<<<<<<<<<In updateBuilding  Method>>>>>>>>>>>>>>>>>>>>>" + id + " >> " + JSON.stringify(queryString));
+	model.building.update( { id : id}, { $set :  queryString },function(err,result) {
 		if (err) {
 			logger.error(err.message);
 			console.log(">>>>"+ JSON.stringify(err));
@@ -251,9 +251,9 @@ function updateBuilding(id, queryString ,callback ) {
 
 //To fetch User Details
 function getAllBulidings(callback) {
-	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getAllBulidings Method >>>>>>>>>>>>>>>>>>>>>");
 	//var name = params.useremail ;
-	model.userDetail.findAll({}, function(err, data){
+	model.building.find({}, function(err, data){
     	if(err) {
     		logger.error(err.message);
     		var errorMessage = {
@@ -262,7 +262,7 @@ function getAllBulidings(callback) {
 					}	
     		callback(errorMessage,null);
     	} else {
-    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		logger.debug(">>>>>>>>>>>>>>>>> data <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
     		callback(null,data);
     	}
  	}); 

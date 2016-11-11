@@ -535,7 +535,7 @@ function addBuild(request, response) {
 			function registerBuildingDetails(requestParams, registrationCallback) {
 				// Initializing variables from request body and setting default values.
 				var document = {
-					id: requestParams.uId,
+					id: requestParams.id,
 					name: requestParams.bName,
 					developer : requestParams.dName,
 					active: requestParams.active
@@ -545,7 +545,7 @@ function addBuild(request, response) {
 				var building ;
 				try {
 					building = model.building(document);
-					userService.savebuildingDetail(building, function (err, data) {
+					userService.saveBuildingDetail(building, function (err, data) {
 						if(err) {
 							finalResponse.payload.status = "WARNING";
 							finalResponse.payload.responseCode = err.code;
