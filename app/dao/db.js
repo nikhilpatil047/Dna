@@ -32,7 +32,7 @@ var userSchema = Schema ({
 	password: String, // encrypted value will be stored
 	profile_photo: String, // We can store the path or base64 for the image.
 	building_name: String,
-	building_website: String,
+	building_id: String,
 	user_type: String,
 	address: String,
 	security_question: {},
@@ -52,6 +52,13 @@ var userDetailSchema = Schema ({
 	flatno: String
 });
 
+var buildingSchema = Schema ({
+	id: String,
+	name: String,
+	developer : String,
+	active: Boolean
+});
+
 var sessionSchema = Schema ({
 	// session : {
 	// 	sessionId: { type: String, required : true, unique : true },
@@ -62,4 +69,5 @@ var sessionSchema = Schema ({
 module.exports.mongoConnection = db;
 module.exports.Users = mongoose.model('Users',userSchema,'user');
 module.exports.userDetail = mongoose.model('userDetail',userDetailSchema,'userdetail');
+module.exports.building = mongoose.model('building',buildingSchema,'building');
 module.exports.Session = mongoose.model('Session',sessionSchema,'session');

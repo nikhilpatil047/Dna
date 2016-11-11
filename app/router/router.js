@@ -19,6 +19,9 @@ router.post('/logout', logout);
 router.post('/addDetails', createUserDetail);
 router.post('/getUserDetail', fetchUserDetail);
 router.put('/updateDetail', updateDetail);
+router.post('/addBuilding', addBuild);
+router.post('/getAllBuildings', fetchAllBuild);
+router.put('/updateBuildingDetail', updateBuildingDetail);
 
 
 /**
@@ -400,7 +403,7 @@ function fetchUserDetail(requestParam, response) {
 };
 
 /*
-* Function to fetch user details.
+* Function to update user details.
 *
 */
 function updateDetail(requestParam, response) {
@@ -445,11 +448,11 @@ function updateDetail(requestParam, response) {
 					"birth_date": requestParam.dob,
 					"flatno": requestParam.flatno
 				};
-				userService.updateUser(requestParam.uId, query, function(error, resp){
+				userService.updateUser(requestParam.id, query, function(error, resp){
 					if(error) {
 						updateCallback(error, null);	
 					}
-					updateCallback(null, requestParam.uId);		
+					updateCallback(null, requestParam.id);		
 				});
 			},
 			// Function to authenticate users. 
@@ -490,6 +493,245 @@ function updateDetail(requestParam, response) {
 
 		res.payload['responseCode'] = '400';
 		res.payload.responseBody['message'] = 'User Details updation error';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to add Building details.
+*
+*/
+function addBuild(request, response) {
+	var METHOD_NAME = "addBuild()";
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	logger.debug("================= Add Build =================");
+	var finalResponse = responseUtils.constructResponseJson();
+
+	try {
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = request.body.payload;					
+
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateSignUpRequest(payload);
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					finalResponse.payload.status = "ERROR";
+					finalResponse.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	finalResponse.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	response.send(finalResponse);
+				}
+
+				payload['protocol'] = request.protocol;
+				payload['host'] = request.get('host');
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+
+			function registerBuildingDetails(requestParams, registrationCallback) {
+				// Initializing variables from request body and setting default values.
+				var document = {
+					id: requestParams.uId,
+					name: requestParams.bName,
+					developer : requestParams.dName,
+					active: requestParams.active
+				}
+
+				//here passing document to compare it with specified schema in db.js file
+				var building ;
+				try {
+					building = model.building(document);
+					userService.savebuildingDetail(building, function (err, data) {
+						if(err) {
+							finalResponse.payload.status = "WARNING";
+							finalResponse.payload.responseCode = err.code;
+					    	finalResponse.payload.responseBody.message = err.message;					    	
+						}
+						else {							
+							finalResponse.payload.status = "SUCCESS";
+							finalResponse.payload.responseCode = constants.RESPONSE_SUCCESS;
+					    	finalResponse.payload.responseBody['message'] = "Building Details added successfully.";	
+					 	}
+						logger.debug(JSON.stringify(finalResponse));
+						registrationCallback(null, finalResponse);
+					});
+				}
+				catch(error) {
+					logger.error("Building data not inserted" + error);
+					registrationCallback(error,null);
+				}	
+			}
+		], function (error, finalResponse) {
+			response.send(finalResponse);		
+		});
+	} catch(error) {
+		finalResponse.payload['responseCode'] = '400';
+		finalResponse.payload.responseBody['message'] = 'Building Registration Failed.';
+		finalResponse['status'] = "ERROR";
+
+		response.send(finalResponse);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to update building details.
+*
+*/
+function updateBuildingDetail(requestParam, response) {
+	var METHOD_NAME = 'updateBuildingDetail(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			//To update user Info.
+			function updateBuildingDetail(requestParam, updateCallback) {
+				var query = {
+					"name": requestParam.bName,
+					"developer" : requestParam.dName,
+					"active": requestParam.active
+				};
+				userService.updateBuilding(requestParam.id, query, function(error, resp){
+					if(error) {
+						updateCallback(error, null);	
+					}
+					updateCallback(null, requestParam.id);		
+				});
+			},
+			// Function to get building details. 
+			function getBuildingsDetail(userId, authenticateCallback) {										
+				userService.getAllBulidings(function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = resultSet;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct success response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Building Details Updation Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Building Details updation error';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to all buildings details.
+*
+*/
+function fetchAllBuild(requestParam, response) {
+	var METHOD_NAME = 'fetchAllBuild(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			// Function to get building details. 
+			function getBuildingsDetail(req, authenticateCallback) {										
+				userService.getAllBulidings(function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = resultSet;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Building Details fetching Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Building Details Failed';
 		res['status'] = "ERROR";
 		response.send(res);
 	}

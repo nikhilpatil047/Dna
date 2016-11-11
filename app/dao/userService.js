@@ -205,7 +205,7 @@ function saveUserDetail(document,callback) {
 
 //To update User Details.
 function updateUser(userID, queryString ,callback ) {
-	logger.debug("<<<<<<<<<<<<<<<<<<<In updateUser  Method>>>>>>>>>>>>>>>>>>>>>" + JSON.stringify(queryString));
+	logger.debug("<<<<<<<<<<<<<<<<<<<In updateUser  Method>>>>>>>>>>>>>>>>>>>>>" + userID + " >> " + JSON.stringify(queryString));
 	model.userDetail.update( { userid : new ObjectId(userID)}, { $set :  queryString },function(err,result) {
 		if (err) {
 			logger.error(err.message);
@@ -218,10 +218,63 @@ function updateUser(userID, queryString ,callback ) {
 			callback(appUtils.getErrorMessage("USER_UPDATION_ERROR").ERROR_CODE, null);
 		}
 	});
-}
+};
+
+//To save Building details
+function saveBuildingDetail(document,callback) {
+	document.save(function(err) {
+		logger.debug("In saveBuilding method");
+		if(err) {
+				logger.error(" In saveBuilding  method >> error >> " + err);
+				//callback(err,null);
+		} 
+		callback(null,document);
+	});
+};
+
+//To update Building Details.
+function updateBuilding(id, queryString ,callback ) {
+	logger.debug("<<<<<<<<<<<<<<<<<<<In updateBuilding  Method>>>>>>>>>>>>>>>>>>>>>" + userID + " >> " + JSON.stringify(queryString));
+	model.building.update( { id : new ObjectId(id)}, { $set :  queryString },function(err,result) {
+		if (err) {
+			logger.error(err.message);
+			console.log(">>>>"+ JSON.stringify(err));
+			callback(errorMessage, null);
+		}
+		if(result.n == 1) {
+			callback(null,true);
+		}else {	
+			callback(appUtils.getErrorMessage("USER_UPDATION_ERROR").ERROR_CODE, null);
+		}
+	});
+};
+
+//To fetch User Details
+function getAllBulidings(callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
+	//var name = params.useremail ;
+	model.userDetail.findAll({}, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+
+
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
 module.exports.logout = logout;
 module.exports.getUserById = getUserById;
 module.exports.saveUserDetail = saveUserDetail;
 module.exports.updateUser = updateUser;
+module.exports.saveBuildingDetail = saveBuildingDetail;
+module.exports.updateBuilding = updateBuilding;
+module.exports.getAllBulidings = getAllBulidings;

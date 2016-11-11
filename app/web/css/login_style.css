@@ -184,3 +184,16 @@ footer a, footer a:link {
 .redTxt{
 	color: #f84545;
 }
+
+.dropDown_building
+{
+	padding: 10px;
+    display: block;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    transition: border-width 0.2s ease;
+    border-radius: 2px;
+    color: #000000;
+}

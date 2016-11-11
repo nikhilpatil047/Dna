@@ -40,12 +40,13 @@
                         </tr>
                         <tr>
                             <td><label>Date of Birth : </label></td>
-                            <td ng-if="!edit">{{userForm.dob}}</td>
+                            <td ng-if="!edit">{{userForm.dob | date: 'longDate'}}</td>
                             <td><input ng-if="edit" class="form-control" type="text" id="dob" ng-model="userForm.dob"></td>
                         </tr>
                     </table>
-                    <button ng-if="edit && userForm.isEmpty" type="submit" ng-click="addUserDetails()" class="btn btn-primary" ng-click="$parent.edit = false">Add Details</button>
-                    <button ng-if="edit && !userForm.isEmpty" type="submit" ng-click="updateUserDetails()" class="btn btn-primary" ng-click="$parent.edit = false">Submit</button>
+                    <br>
+                    <button ng-if="edit && userForm.isEmpty" type="submit" ng-click="addUserDetails(); edit = false" class="btn btn-primary" ng-click="$parent.edit = false">Add Details</button>&nbsp;
+                    <button ng-if="edit && !userForm.isEmpty" type="submit" ng-click="updateUserDetails()" class="btn btn-primary" ng-click="$parent.edit = false">Submit</button>&nbsp;
                     <button ng-if="edit" class="btn btn-primary" ng-click="$parent.edit = false">Cancel</button>
             </div>
             </div>
@@ -61,10 +62,10 @@
                             <td><label>Building Name : </label></td>
                             <td><label>{{ user.buildingName }}</label></td>
                         </tr>
-                        <tr>
-                            <td><label>Building Website : </label></td>
+                        <!-- <tr>
+                            <td><label>Developer : </label></td>
                             <td><label>{{ user.buildingWebsite }}</label></td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td><label>Flat Number : </label></td>
                             <td><label>D/69 </label></td>
