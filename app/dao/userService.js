@@ -268,6 +268,53 @@ function getAllBulidings(callback) {
  	}); 
 };
 
+//To save Tax Template details
+function saveTaxDetail(document,callback) {
+	document.save(function(err) {
+		logger.debug("In saveTaxDetail method");
+		if(err) {
+				logger.error(" In saveTaxDetail  method >> error >> " + err);
+				//callback(err,null);
+		} 
+		callback(null,document);
+	});
+};
+
+//To update tax Details.
+function updateTaxDetails(id, queryString ,callback ) {
+	logger.debug("<<<<<<<<<<<<<<<<<<<In updateTaxDetails  Method>>>>>>>>>>>>>>>>>>>>>" + id + " >> " + JSON.stringify(queryString));
+	model.taxTemplate.update( {building_id : id}, { $set :  queryString },function(err,result) {
+		if (err) {
+			logger.error(err.message);
+			console.log(">>>>"+ JSON.stringify(err));
+			callback(errorMessage, null);
+		}
+		if(result.n == 1) {
+			callback(null,true);
+		}else {	
+			callback(appUtils.getErrorMessage("USER_UPDATION_ERROR").ERROR_CODE, null);
+		}
+	});
+};
+
+//To fetch Tax Template Details
+function getTaxDetails(id, callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getTaxDetails Method >>>>>>>>>>>>>>>>>>>>>");
+	//var name = params.useremail ;
+	model.taxTemplate.find({building_id : id}, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> data <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
 
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
@@ -278,3 +325,6 @@ module.exports.updateUser = updateUser;
 module.exports.saveBuildingDetail = saveBuildingDetail;
 module.exports.updateBuilding = updateBuilding;
 module.exports.getAllBulidings = getAllBulidings;
+module.exports.getTaxDetails = getTaxDetails;
+module.exports.updateTaxDetails = updateTaxDetails;
+module.exports.saveTaxDetail = saveTaxDetail;

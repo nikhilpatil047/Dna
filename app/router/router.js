@@ -22,6 +22,9 @@ router.put('/updateDetail', updateDetail);
 router.post('/addBuilding', addBuild);
 router.post('/getAllBuildings', fetchAllBuild);
 router.put('/updateBuildingDetail', updateBuildingDetail);
+router.post('/getTaxTemplate', fetchTemplate);
+router.post('/addTaxTemplate', addTemplate);
+router.put('/updateTaxTemplate', updateTemplate);
 
 
 /**
@@ -666,7 +669,7 @@ function updateBuildingDetail(requestParam, response) {
 };
 
 /*
-* Function to all buildings details.
+* Function to fetch all buildings details.
 *
 */
 function fetchAllBuild(requestParam, response) {
@@ -737,5 +740,240 @@ function fetchAllBuild(requestParam, response) {
 	}
 	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
+
+/*
+* Function to fetch Tax details for building.
+*
+*/
+function fetchTemplate(requestParam, response) {
+	var METHOD_NAME = 'fetchTemplate(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			
+			function getTaxDetail(req, authenticateCallback) {										
+				userService.getTaxDetails(req.bId, function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = resultSet;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Tax Template Details fetching Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Tax Template Details Failed';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to update Tax Template details.
+*
+*/
+function updateTemplate(requestParam, response) {
+	var METHOD_NAME = 'updateTemplate(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			//To update user Info.
+			function updateTaxDetails(requestParam, updateCallback) {
+				var query = {
+					"template": requestParam.template
+				};
+				userService.updateTaxDetails(requestParam.bId, query, function(error, resp){
+					if(error) {
+						updateCallback(error, null);	
+					}
+					updateCallback(null, requestParam.bId);		
+				});
+			},
+			// Function to get building details. 
+			function getTaxDetail(bId, authenticateCallback) {										
+				userService.getTaxDetails(bId, function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = resultSet;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct success response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Tax Template Details Updation Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Tax Template Details updation error';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to add Tax Template details.
+*
+*/
+function addTemplate(request, response) {
+	var METHOD_NAME = "addTemplate()";
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	logger.debug("================= Add tax Template =================");
+	var finalResponse = responseUtils.constructResponseJson();
+
+	try {
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = request.body.payload;					
+
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateSignUpRequest(payload);
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					finalResponse.payload.status = "ERROR";
+					finalResponse.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	finalResponse.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	response.send(finalResponse);
+				}
+
+				payload['protocol'] = request.protocol;
+				payload['host'] = request.get('host');
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+
+			function registerTaxDetails(requestParams, registrationCallback) {
+				// Initializing variables from request body and setting default values.
+				var document = {
+					building_id: requestParams.bId,
+					template: requestParams.template
+				}
+
+				//here passing document to compare it with specified schema in db.js file
+				var taxTemplate ;
+				try {
+					taxTemplate = model.taxTemplate(document);
+					userService.saveTaxDetail(taxTemplate, function (err, data) {
+						if(err) {
+							finalResponse.payload.status = "WARNING";
+							finalResponse.payload.responseCode = err.code;
+					    	finalResponse.payload.responseBody.message = err.message;					    	
+						}
+						else {							
+							finalResponse.payload.status = "SUCCESS";
+							finalResponse.payload.responseCode = constants.RESPONSE_SUCCESS;
+					    	finalResponse.payload.responseBody['message'] = "Tax Template added successfully.";	
+					 	}
+						logger.debug(JSON.stringify(finalResponse));
+						registrationCallback(null, finalResponse);
+					});
+				}
+				catch(error) {
+					logger.error("Tax Template data not inserted" + error);
+					registrationCallback(error,null);
+				}	
+			}
+		], function (error, finalResponse) {
+			response.send(finalResponse);		
+		});
+	} catch(error) {
+		finalResponse.payload['responseCode'] = '400';
+		finalResponse.payload.responseBody['message'] = 'Tax Template Registration Failed.';
+		finalResponse['status'] = "ERROR";
+
+		response.send(finalResponse);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+}; 
 
 module.exports = router;
