@@ -21,8 +21,13 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Building Name</label>
-                                    <input class="form-control" ng-model="newForm.buildname" placeholder="Enter Building Name">
-                                    <p class="help-block">Example "Mayuresh Park" etc.</p>
+                                    <select ng-model="newForm.buildingId">
+                                      <option value="" selected>--Select Building--</option>
+                                      <option ng-repeat="building in buldings" value="{{building._id}}">{{building.name}}</option>
+                                    </select></br>
+                                    <!-- <input class="form-control" ng-model="newForm.buildname" placeholder="Select Building Name">
+ -->
+                                    <a href="" ng-click="openAddBuilding()">Add New Building</a>
                                 </div>
                                 <!-- <div class="form-group">
                                     <label>Building Website</label>
@@ -102,7 +107,7 @@
                                         </label>
                                     </div>
 								</div>
-                                <button type="submit" class="btn btn-default" ng-disabled="!newForm.agree || userForm.$invalid || !passMatch" ng-click="submitUser(newForm)">Register</button>
+                                <button type="submit" class="btn btn-default" ng-disabled="!newForm.agree || userForm.$invalid || !passMatch || !newForm.buildingId" ng-click="submitUser(newForm)">Register</button>
                                 <button type="reset" class="btn btn-default">Reset</button>
                             </form>
                         </div>

@@ -1,5 +1,5 @@
 
-var app = angular.module('Dnaapp', ['annotorious','ngTagsInput','ngRoute', 'ngMaterial', 'config', 'ngCookies', 'ngMessages', 'ngSanitize', 'ngStorage', 'ngResource','ngAnimate', 'ngTouch', 'validation.match']);
+var app = angular.module('Dnaapp', ['annotorious','ngTagsInput','ngRoute', 'ngMaterial', 'config', 'ngCookies', 'ngMessages', 'ngSanitize', 'ngStorage', 'ngResource','ngAnimate', 'ngTouch', 'ngDialog','validation.match']);
 
 
 app.config(['$routeProvider',
@@ -9,6 +9,10 @@ app.config(['$routeProvider',
   		when('/invoices', {
 	      templateUrl: 'views/invoice.html' ,
 	      controller: 'invoiceController' 
+	    }).
+	    when('/createInvoices', {
+	      templateUrl: 'views/createInvoice.html' ,
+	      controller: 'createInvoiceController' 
 	    }).
 	    when('/dashboard', {
 	      templateUrl: 'views/dashboard.html' ,

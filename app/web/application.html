@@ -6,7 +6,12 @@
 
 	    <!-- Bootstrap Core CSS -->
 	    <link href="./lib/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
+	    
+	    <link href='./lib/bower_components/ng-dialog/css/ngDialog.min.css' rel='stylesheet' type='text/css'>
+    	<link href='./lib/bower_components/ng-dialog/css/ngDialog-theme-default.min.css' rel='stylesheet' type='text/css'>
+    	<link href='./lib/bower_components/ng-dialog/css/ngDialog-theme-plain.min.css' rel='stylesheet' type='text/css'>
+    	<!-- <link href='./lib/bower_components/ng-dialog/css/ngDialog-theme-wizard.min.css' rel='stylesheet' type='text/css'>
+ -->
 	    <!-- Timeline CSS -->
     	<link href="./css/dist/css/timeline.css" rel="stylesheet">
 
@@ -291,6 +296,9 @@
 	                        <li>
 	                            <a href="#/invoices"><i class="fa fa-table fa-fw"></i> Invoices</a>
 	                        </li>
+	                        <li>
+	                            <a href="#/createInvoices"><i class="fa fa-table fa-fw"></i> Generate Invoices</a>
+	                        </li>
 							<li>
 	                            <a href="#/tables"><i class="fa fa-photo fa-fw"></i> Gallary</a>
 	                        </li>
@@ -336,6 +344,7 @@
 		<script src="./lib/bower_components/angular-messages/angular-messages.min.js"></script>
 		<script src="./lib/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 		<script src="./lib/bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
+		<script src="./lib/bower_components/ng-dialog/js/ngDialog.min.js"></script>
 		<script src="./lib/bower_components/ngstorage/ngStorage.min.js"></script>
 		<script src="./lib/prototype.js"></script>
 		<script src="./lib/calendarview.js"></script>
@@ -389,6 +398,7 @@
 		<script src="./Controller/morris.js"></script>
 		<script src="./Controller/profile.js"></script>
 		<script src="./Controller/settings.js"></script>
+		<script src="./Controller/createInvoices.js"></script>
 		<script src="./utils/HttpCommunicationUtil.js"></script>
 		<script src="./utils/requestUtil.js"></script>
 

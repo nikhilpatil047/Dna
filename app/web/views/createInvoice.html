@@ -1,0 +1,76 @@
+<!-- start page -->
+<!-- <div ng-controller = "IndexCtrl" > -->
+<div id="page-wrapper">
+	<div> 
+
+	</div>
+	<!-- <div class="page-header" >
+		<h2>{{ pageHeader }}</h2>
+	</div> -->
+	<div class="table-responsive " >
+		<table class="table table-border table-stripped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email Address</th>
+					<th>Phone Number</th>
+					<th>parking</th>
+					<th>other</th>
+					<th>balance</th>
+					<!-- <th>Actions</th> -->
+				</tr>
+			</thead>
+			<tbody ng-if="contacts.length > 0">
+				<tr ng-repeat = 'c in contacts' id={{$index}} >
+					<td> {{ c.name }} </td>
+					<td> {{ c.email }} </td>
+					<td> {{ c.phone }} </td>
+					<td> 
+						<div ng-if ="editable">	
+							<div ng-if ="editParameter == '{{$index}}'">	
+								<input type = "checkbox" value = "{{ c.parking }}">
+							</div>
+							<div ng-if ="{{c.parking}}">	
+								Yes 
+							</div>
+							<div ng-if ="!{{c.parking}}">	
+								No 
+							</div>
+						</div>
+						<div ng-if = "!editable">
+							{{c.parking ? 'Yes' : 'No'}}
+						</div>
+					</td>
+					<td> 
+						<div ng-if =" editable ">	
+							<input type = "checkbox" value = "{{ c.other }}">							
+						</div>
+						<div ng-if = "!editable">
+							{{ c.other ? 'Yes' : 'No'}} 
+						</div>
+					</td>
+					<td> 
+						<div ng-if =" editable ">	
+							<input type = "text" value = "{{ c.balance }}" class="form-control">							
+						</div>
+						<div ng-if = "!editable">
+							{{ c.balance }} 
+						</div>
+					</td>
+				</tr>
+				
+			</tbody>
+			<tbody ng-if="contacts.length < 1">
+				<tr >
+					<td>No Records available</td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+	
+	<div>
+		<a href="#/generateBill" class="btn btn-info btn-xs pull-right">Generate Bill</a>
+		<!-- <a href="#/" class="btn btn-info btn-xs pull-right">Prev</a> -->
+	</div>
+</div>

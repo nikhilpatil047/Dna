@@ -18,6 +18,7 @@ router.post('/createuser', createuser);
 router.post('/logout', logout);
 router.post('/addDetails', createUserDetail);
 router.post('/getUserDetail', fetchUserDetail);
+router.post('/getUsersByBuilding', fetchUserByBuilding);
 router.put('/updateDetail', updateDetail);
 router.post('/addBuilding', addBuild);
 router.post('/getAllBuildings', fetchAllBuild);
@@ -25,6 +26,10 @@ router.put('/updateBuildingDetail', updateBuildingDetail);
 router.post('/getTaxTemplate', fetchTemplate);
 router.post('/addTaxTemplate', addTemplate);
 router.put('/updateTaxTemplate', updateTemplate);
+router.post('/addTaxInvoices', addInvoices);
+router.post('/getTaxInvoicesByBuilding', fetchInviocesForBuilding);
+router.post('/getTaxInvoicesByUser', fetchInviocesForUser);
+
 
 
 /**
@@ -405,6 +410,83 @@ function fetchUserDetail(requestParam, response) {
 	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
 
+fetchUserByBuilding
+/*
+* Function to fetch user for specific building.
+*
+*/
+function fetchUserByBuilding(requestParam, response) {
+	var METHOD_NAME = 'fetchUserDetail(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			// Function to authenticate users. 
+			function fetchUserByBuilding(requestParams, fetchCallback) {					
+
+				var bId = jsonUtils.getPath(requestParams, 'bId');					
+				userService.getUserBybuilding(bId, function(err,resultSet) {
+					console.log("inauth >>>")
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.userDetails = resultSet;
+						fetchCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct success response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'User Details fetching Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'User Details Failed';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
 /*
 * Function to update user details.
 *
@@ -538,7 +620,6 @@ function addBuild(request, response) {
 			function registerBuildingDetails(requestParams, registrationCallback) {
 				// Initializing variables from request body and setting default values.
 				var document = {
-					id: requestParams.id,
 					name: requestParams.bName,
 					developer : requestParams.dName,
 					active: requestParams.active
@@ -976,4 +1057,235 @@ function addTemplate(request, response) {
 	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 }; 
 
+/*
+* Function to add Tax Invoices details.
+*
+*/
+function addInvoices(request, response) {
+	var METHOD_NAME = "addInvoices()";
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	logger.debug("================= Add tax Invoices =================");
+	var finalResponse = responseUtils.constructResponseJson();
+
+	try {
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = request.body.payload;					
+
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateSignUpRequest(payload);
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					finalResponse.payload.status = "ERROR";
+					finalResponse.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	finalResponse.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	response.send(finalResponse);
+				}
+
+				payload['protocol'] = request.protocol;
+				payload['host'] = request.get('host');
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+
+			function addTaxInvoices(requestParams, registrationCallback) {
+				// Initializing variables from request body and setting default values.
+				var document = {
+					building_id: requestParams.bId,
+					month: requestParams.month,
+					tax: requestParams.invoices
+				}
+
+				//here passing document to compare it with specified schema in db.js file
+				var taxInvoices ;
+				try {
+					taxInvoices = model.taxInvoice(document);
+					userService.saveTaxInvoices(taxInvoices, function (err, data) {
+						if(err) {
+							finalResponse.payload.status = "WARNING";
+							finalResponse.payload.responseCode = err.code;
+					    	finalResponse.payload.responseBody.message = err.message;					    	
+						}
+						else {							
+							finalResponse.payload.status = "SUCCESS";
+							finalResponse.payload.responseCode = constants.RESPONSE_SUCCESS;
+					    	finalResponse.payload.responseBody['message'] = "Tax Invoices added successfully.";	
+					 	}
+						logger.debug(JSON.stringify(finalResponse));
+						registrationCallback(null, finalResponse);
+					});
+				}
+				catch(error) {
+					logger.error("Tax Invoices data not inserted" + error);
+					registrationCallback(error,null);
+				}	
+			}
+		], function (error, finalResponse) {
+			response.send(finalResponse);		
+		});
+	} catch(error) {
+		finalResponse.payload['responseCode'] = '400';
+		finalResponse.payload.responseBody['message'] = 'Tax Invoices Registration Failed.';
+		finalResponse['status'] = "ERROR";
+
+		response.send(finalResponse);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+}; 
+
+/*
+* Function to fetch Tax details for building.
+*
+*/
+function fetchInviocesForBuilding(requestParam, response) {
+	var METHOD_NAME = 'fetchInviocesForBuilding(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			 }
+			 }
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			
+			function getInviocesForBuilding(req, authenticateCallback) {										
+				userService.getInviocesByBuilding(req.bId, function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = resultSet;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Tax Details fetching Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Tax Details Failed';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
+
+/*
+* Function to fetch Tax details for User.
+*
+*/
+function fetchInviocesForUser(requestParam, response) {
+	var METHOD_NAME = 'fetchInviocesForUser(): ';
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+	var res = {
+		payload: {
+    		responseType: "application/json",
+    		responseCode: "200",
+   		    responseBody: {
+       			 
+   			}
+		}
+	};
+
+	try {			
+		async.waterfall([
+			function validateRequestParameter(requestParametersCallback) {
+				var payload = requestParam.body.payload;					
+				// Validate request parameters.
+				var requestValidationResponse = validationUtils.validateAuthenticationRequest(payload);					
+
+				// If any value of required fields given in the validation function is not available then error message send back to the client. 
+				if(!requestValidationResponse.status) {
+					
+					res.payload.status = "ERROR";
+					res.payload.responseCode = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_CODE;
+			    	res.payload.responseBody.message = appUtils.getErrorMessage("REQUEST_PARAMETERS_MISSING").ERROR_MESSAGE;
+			    	resp.send(res);
+				}
+
+				// Pass request parameters to the next function.
+				requestParametersCallback(null, payload);
+			},
+			
+			function getInviocesForUser(req, authenticateCallback) {										
+				userService.getInviocesByBuilding(req.bId, function(err,resultSet) {
+					if(err){
+						authenticateCallback(err, null);
+					} else{
+						var data = [];
+						for(var i=0; i<resultSet.length; i++){
+							for(var j=0;j<resultSet[i].tax.length; i++){
+								if(resultSet[i].tax[j].userid == req.uId){
+									data.push(resultSet[i].tax[j]);
+								}
+							}
+						}
+						res.payload.status = "SUCCESS";
+						res.payload.responseCode = "200";
+						res.payload.responseBody.data = data;
+						authenticateCallback(null, res);	
+					}
+				});
+			}
+			
+		], function (error, resp) {
+			
+			// Construct response object and send back to the client.
+			if(error){
+				res.payload['responseCode'] = '400';
+				res.payload.responseBody['message'] = 'Tax Details fetching Failed';
+				res['status'] = "ERROR";
+				response.send(res);
+			} else {
+				response.send(resp);
+			}
+			
+		});
+	}catch(error) {
+
+		res.payload['responseCode'] = '400';
+		res.payload.responseBody['message'] = 'Tax Details Failed';
+		res['status'] = "ERROR";
+		response.send(res);
+	}
+	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
+};
 module.exports = router;

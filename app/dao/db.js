@@ -53,7 +53,6 @@ var userDetailSchema = Schema ({
 });
 
 var buildingSchema = Schema ({
-	id: String,
 	name: String,
 	developer : String,
 	active: Boolean

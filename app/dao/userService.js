@@ -52,8 +52,8 @@ function signup(req, res, callback) {
 		password : password,
 		profile_photo : null,
 		user_type: req.usertype,
-		building_name: req.buildingName || null,
-		building_website: req.buildingWebsite || null,
+		building_name: req.buildingname || null,
+		building_id: req.building_id || null,
 		address: req.address,
 		security_question: req.securityquestion || null,
 		notificationTypes : {
@@ -177,6 +177,23 @@ function getUserById(uId, callback) {
 	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
 	//var name = params.useremail ;
 	model.userDetail.findOne({ userid : uId }, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+function getUserBybuilding(bId, callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
+	//var name = params.useremail ;
+	model.userDetail.find({ building_id : bId }, function(err, data){
     	if(err) {
     		logger.error(err.message);
     		var errorMessage = {
@@ -316,10 +333,42 @@ function getTaxDetails(id, callback) {
  	}); 
 };
 
+//To save Tax Invoices details
+function saveTaxInvoices(document,callback) {
+	document.save(function(err) {
+		logger.debug("In saveTaxInvoices method");
+		if(err) {
+				logger.error(" In saveTaxInvoices  method >> error >> " + err);
+				//callback(err,null);
+		} 
+		callback(null,document);
+	});
+};
+
+//To fetch Tax invoices for building Details
+function getInvoicesByBuilding(id, callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getInvoicesByBuilding Method >>>>>>>>>>>>>>>>>>>>>");
+	//var name = params.useremail ;
+	model.taxInvoice.find({building_id : id}, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> data <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
 module.exports.logout = logout;
 module.exports.getUserById = getUserById;
+module.exports.getUserBybuilding = getUserBybuilding;
 module.exports.saveUserDetail = saveUserDetail;
 module.exports.updateUser = updateUser;
 module.exports.saveBuildingDetail = saveBuildingDetail;
@@ -328,3 +377,5 @@ module.exports.getAllBulidings = getAllBulidings;
 module.exports.getTaxDetails = getTaxDetails;
 module.exports.updateTaxDetails = updateTaxDetails;
 module.exports.saveTaxDetail = saveTaxDetail;
+module.exports.saveTaxInvoices = saveTaxInvoices;
+module.exports.getInvoicesByBuilding = getInvoicesByBuilding;
