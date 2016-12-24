@@ -334,7 +334,7 @@ function getTaxDetails(id, callback) {
 };
 
 //To save Tax Invoices details
-function saveTaxInvoices(document,callback) {
+function saveTaxInvoices(document, callback) {
 	document.save(function(err) {
 		logger.debug("In saveTaxInvoices method");
 		if(err) {

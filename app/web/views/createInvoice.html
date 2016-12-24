@@ -31,53 +31,28 @@
 					<th>Name</th>
 					<th>Email Address</th>
 					<th>Phone Number</th>
-					<th>parking</th>
-					<th>other</th>
-					<th>balance</th>
+					<!-- <th>Tax content</th> -->
+					<th>Balance</th>
+					<th>Total</th>
 					<!-- <th>Actions</th> -->
 				</tr>
 			</thead>
-			<tbody ng-if="contacts.length > 0">
-				<tr ng-repeat = 'c in contacts' id={{$index}} >
-					<td> {{ c.name }} </td>
+			<tbody ng-if="generatedInvoices.length > 0">
+				<tr ng-repeat = 'c in generatedInvoices' id={{$index}} >
+					<td> {{ c.first_name }} {{ c.last_name }} </td>
 					<td> {{ c.email }} </td>
 					<td> {{ c.phone }} </td>
+					<!-- <td><span ng-repeat="content in c.invoice">{{ content.content }} : {{ content.charge }}</span></td> -->
 					<td> 
-						<div ng-if ="editable">	
-							<div ng-if ="editParameter == '{{$index}}'">	
-								<input type = "checkbox" value = "{{ c.parking }}">
-							</div>
-							<div ng-if ="{{c.parking}}">	
-								Yes 
-							</div>
-							<div ng-if ="!{{c.parking}}">	
-								No 
-							</div>
-						</div>
-						<div ng-if = "!editable">
-							{{c.parking ? 'Yes' : 'No'}}
-						</div>
+						{{ c.balance }} 
 					</td>
 					<td> 
-						<div ng-if =" editable ">	
-							<input type = "checkbox" value = "{{ c.other }}">							
-						</div>
-						<div ng-if = "!editable">
-							{{ c.other ? 'Yes' : 'No'}} 
-						</div>
-					</td>
-					<td> 
-						<div ng-if =" editable ">	
-							<input type = "text" value = "{{ c.balance }}" class="form-control">							
-						</div>
-						<div ng-if = "!editable">
-							{{ c.balance }} 
-						</div>
+						{{c.total}}
 					</td>
 				</tr>
 				
 			</tbody>
-			<tbody ng-if="contacts.length < 1">
+			<tbody ng-if="generatedInvoices.length < 1">
 				<tr >
 					<td colspan="5">No Invoices available for this month. Please generate.</td>
 				</tr>
@@ -87,7 +62,7 @@
 	</div>
 	
 	<div>
-		<button class="btn btn-info btn-xs pull-right" ng-click="createAndSaveInvioces()" ng-disabled="contacts.length > 0">Generate Bill</button>
+		<button class="btn btn-info btn-xs pull-right" ng-click="createAndSaveInvioces()" ng-disabled="generatedInvoices.length > 0">Generate Bill</button>
 		<!-- <a href="#/" class="btn btn-info btn-xs pull-right">Prev</a> -->
 	</div>
 </div>

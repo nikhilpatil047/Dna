@@ -1099,10 +1099,10 @@ function addInvoices(request, response) {
 				}
 
 				//here passing document to compare it with specified schema in db.js file
-				var taxInvoices ;
+				var taxInvoice ;
 				try {
-					taxInvoices = model.taxInvoice(document);
-					userService.saveTaxInvoices(taxInvoices, function (err, data) {
+					taxInvoice = model.taxInvoice(document);
+					userService.saveTaxInvoices(taxInvoice, function (err, data) {
 						if(err) {
 							finalResponse.payload.status = "WARNING";
 							finalResponse.payload.responseCode = err.code;

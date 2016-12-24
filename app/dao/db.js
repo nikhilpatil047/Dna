@@ -81,5 +81,5 @@ module.exports.Users = mongoose.model('Users',userSchema,'user');
 module.exports.userDetail = mongoose.model('userDetail',userDetailSchema,'userdetail');
 module.exports.building = mongoose.model('building',buildingSchema,'building');
 module.exports.taxTemplate = mongoose.model('taxTemplate',taxTemplateSchema,'taxtemplate');
-module.exports.taxInvoiceSchema = mongoose.model('taxInvoice',taxInvoiceSchema,'taxinvoice');
+module.exports.taxInvoice = mongoose.model('taxInvoice',taxInvoiceSchema,'taxinvoice');
 module.exports.Session = mongoose.model('Session',sessionSchema,'session');

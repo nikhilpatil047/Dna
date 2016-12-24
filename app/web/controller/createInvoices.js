@@ -80,28 +80,40 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
             if (data.payload.status === "ERROR") {
             	$scope.resTxt = data.payload.responseBody.message;
             }else {
-            	$scope.contacts = data;
+            	$scope.contacts = data.payload.responseBody.userDetails;
             }
         });
 	}
 	$scope.getContacts();
 
+	$scope.generatedInvoices = [];
 	$scope.createAndSaveInvioces = function(){
+		var generatedInvoices = []
+		angular.forEach($scope.contacts, function(user){
+			user.invoice = $scope.defaultInvoice;
+			user.total = 0;
+			angular.forEach($scope.defaultInvoice, function(content){
+				user.total = user.total + content.charge*1;
+			});
+			generatedInvoices.push(user);
+		});
+
 		var userData = {
 		  "header": {
 	      },
 	      "payload": {
 	        "bId" : $scope.user.buildingName,
-	        "month": newDate().month(),
-	        "invoices": $scope.generatedInvoices
+	        "month": new Date().getMonth(),
+	        "invoices": generatedInvoices
 			} 
 		};
 
-		HttpCommunicationUtil.doPost('/getUsersByBuilding', userData,function(data, status) {
+		HttpCommunicationUtil.doPost('/addTaxInvoices', userData,function(data, status) {
             if (data.payload.status === "ERROR") {
             	$scope.resTxt = data.payload.responseBody.message;
             }else {
-            	$scope.contacts = data;
+            	$scope.generatedInvoices = generatedInvoices;
+            	//$scope.contacts = data;
             }
         });
 	}
