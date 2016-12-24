@@ -126,7 +126,7 @@ var userLogin = function(request, callback) {
 					request.session["sessionId"] = appUtils.generateToken();
 					resp.payload.responseBody.userDetails['id'] = resultSet._id;
 					resp.payload.responseBody.userDetails['address'] = resultSet.address;
-					resp.payload.responseBody.userDetails['buildingWebsite'] = resultSet.building_website;
+					resp.payload.responseBody.userDetails['buildingId'] = resultSet.building_id;
 					resp.payload.responseBody.userDetails['buildingName'] = resultSet.building_name;
 					resp.payload['session'] = request.session;
 					console.log("session >>> "+JSON.stringify(request.session));

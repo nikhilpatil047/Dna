@@ -17,7 +17,7 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 	      "header": {
 	      },
 	      "payload": {
-	        "bId" : $scope.user.buildingName		
+	        "bId" : $scope.user.buildingId		
 			} 
 		};
 
@@ -53,7 +53,7 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 	      "header": {
 	      },
 	      "payload": {
-	        "bId" : $scope.user.buildingName,
+	        "bId" : $scope.user.buildingId,
 	        "template" :  $scope.newStructure.terms		
 			} 
 		};
@@ -72,7 +72,7 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 		  "header": {
 	      },
 	      "payload": {
-	        "bId" : $scope.user.buildingName 		
+	        "bId" : $scope.user.buildingId 		
 			} 
 		};
 
@@ -102,7 +102,7 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 		  "header": {
 	      },
 	      "payload": {
-	        "bId" : $scope.user.buildingName,
+	        "bId" : $scope.user.buildingId,
 	        "month": new Date().getMonth(),
 	        "invoices": generatedInvoices
 			} 
