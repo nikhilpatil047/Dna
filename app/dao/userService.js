@@ -191,7 +191,7 @@ function getUserById(uId, callback) {
  	}); 
 };
 function getUserBybuilding(bId, callback) {
-	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ bId);
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserBybuilding Method >>>>>>>>>>>>>>>>>>>>>"+ bId);
 	//var name = params.useremail ;
 	model.userDetail.find({ building_id : bId }, function(err, data){
     	if(err) {
@@ -202,7 +202,7 @@ function getUserBybuilding(bId, callback) {
 					}	
     		callback(errorMessage,null);
     	} else {
-    		logger.debug(">>>>>>>>>>>>>>>>> User <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		logger.debug(">>>>>>>>>>>>>>>>> building <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
     		callback(null,data);
     	}
  	}); 
@@ -223,7 +223,7 @@ function saveUserDetail(document,callback) {
 //To update User Details.
 function updateUser(userID, queryString ,callback ) {
 	logger.debug("<<<<<<<<<<<<<<<<<<<In updateUser  Method>>>>>>>>>>>>>>>>>>>>>" + userID + " >> " + JSON.stringify(queryString));
-	model.userDetail.update( { userid : new ObjectId(userID)}, { $set :  queryString },function(err,result) {
+	model.userDetail.update( { userid : userID}, { $set :  queryString },function(err,result) {
 		if (err) {
 			logger.error(err.message);
 			console.log(">>>>"+ JSON.stringify(err));

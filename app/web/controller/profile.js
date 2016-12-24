@@ -1,14 +1,15 @@
 app.controller('profileController', function($scope, $cookies, $location, $rootScope, $log, requestUtil, HttpCommunicationUtil){
 	var ModuleName = "profileController";
 	$rootScope.appTitle = "Profile";
-	// $scope.userForm = {
-	// 	'isEmpty': true,
-	// 	'fName': 'NA',
-	// 	'lName': 'NA',
-	// 	'email': 'NA',
-	// 	'contact': 'NA',
-	// 	'dob': 'NA'
-	// }
+	$scope.userForm = {
+		'isEmpty': true,
+		'fName': 'NA',
+		'lName': 'NA',
+		'email': 'NA',
+		'contact': 'NA',
+		'dob': 'NA'
+	}
+	//$scope.userForm = {};
 	var logoutData = $cookies.get('session');
 	if(logoutData){
 		logoutData = JSON.parse(logoutData);
@@ -22,7 +23,9 @@ app.controller('profileController', function($scope, $cookies, $location, $rootS
 			if (data.payload.status === "ERROR") {
 				alert(data.payload.responseBody.message);
 			}else {
-				$scope.userForm = data.payload.responseBody.userDetails;
+				if(data.payload.responseBody.userDetails){
+					$scope.userForm = data.payload.responseBody.userDetails;
+				}		
 			}		
 		},function(err){
             alert(err);
@@ -32,6 +35,7 @@ app.controller('profileController', function($scope, $cookies, $location, $rootS
 	$scope.getUserDetails();
 	$scope.updateUserDetails = function(){
 		requestUtil.data.header.sessionId = logoutData.sessionId; 
+		$scope.userForm.building_id = logoutData.user.buildingId;
        	requestUtil.data.payload = $scope.userForm;
 
        	HttpCommunicationUtil.doPut('/updateDetail', requestUtil.data,function(data, status) {
@@ -50,6 +54,7 @@ app.controller('profileController', function($scope, $cookies, $location, $rootS
 	$scope.addUserDetails = function(){
 		requestUtil.data.header.sessionId = logoutData.sessionId; 
 		$scope.userForm.uId = logoutData.user.id;
+		$scope.userForm.building_id = logoutData.user.buildingId;
        	requestUtil.data.payload = $scope.userForm;
 
        	HttpCommunicationUtil.doPost('/addDetails', requestUtil.data,function(data, status) {

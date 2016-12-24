@@ -374,14 +374,17 @@ function fetchUserDetail(requestParam, response) {
 					} else{
 						res.payload.status = "SUCCESS";
 						res.payload.responseCode = "200";
-						res.payload.responseBody.userDetails = {};
-						res.payload.responseBody.userDetails['id'] = resultSet.userid;
-						res.payload.responseBody.userDetails['fName'] = resultSet.first_name;
-						res.payload.responseBody.userDetails['lName'] = resultSet.last_name;
-						res.payload.responseBody.userDetails['contact'] = resultSet.contactno;
-						res.payload.responseBody.userDetails['dob'] = resultSet.birth_date;
-						res.payload.responseBody.userDetails['flatno'] = resultSet.flatno;
-						res.payload.responseBody.userDetails['email'] = resultSet.email;
+						if(resultSet){
+							res.payload.responseBody.userDetails = {};
+							res.payload.responseBody.userDetails['id'] = resultSet.userid;
+							res.payload.responseBody.userDetails['fName'] = resultSet.first_name;
+							res.payload.responseBody.userDetails['lName'] = resultSet.last_name;
+							res.payload.responseBody.userDetails['contact'] = resultSet.contactno;
+							res.payload.responseBody.userDetails['dob'] = resultSet.birth_date;
+							res.payload.responseBody.userDetails['flatno'] = resultSet.flatno;
+							res.payload.responseBody.userDetails['email'] = resultSet.email;
+						}
+						
 						authenticateCallback(null, res);	
 					}
 				});
@@ -531,7 +534,8 @@ function updateDetail(requestParam, response) {
 					"email": requestParam.email,
 					"contactno": requestParam.contact,
 					"birth_date": requestParam.dob,
-					"flatno": requestParam.flatno
+					"flatno": requestParam.flatno,
+					"building_id" : requestParam.building_id
 				};
 				userService.updateUser(requestParam.id, query, function(error, resp){
 					if(error) {
