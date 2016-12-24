@@ -1,0 +1,39 @@
+<div class="main">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
+        <h3>Create Bill Template</h3>
+      </div>
+    </div>
+
+    <div class='control-label'><h4>Add Contents</h4></div>
+    <div class='form-group'>
+      <input type="text" class='form-control' ng-model='newStructure.content' placeholder="Content" required="required" ><br>
+      <input type="text" class='form-control' ng-model='newStructure.charge' placeholder="Charge" required="required" >
+      <br>
+      <button class="btn btn-primary" ng-click="addTerm()" ng-disabled="!newStructure.content && !newStructure.charge">Add</button>
+    </div>
+    <div class='control-label'><h4>Defined Contents</h4></div>
+    <div class='form-group'>
+    <table class="table table-border table-stripped table-hover table-condensed">
+      <thead>
+        <tr>
+          <th>Content</th>
+          <th>Charge</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="term in newStructure.terms">
+          <td>{{term.content}}</td>
+          <td>{{term.charge}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <br>
+   <div class="form-group">
+      <button class="btn btn-primary" ng-click="createInvoiceTemplate()" ng-disabled="newStructure.terms.length < 1">Save Structure</button>
+    </div>
+  </div> <!-- container-fluid -->
+</div>

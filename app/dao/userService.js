@@ -191,7 +191,7 @@ function getUserById(uId, callback) {
  	}); 
 };
 function getUserBybuilding(bId, callback) {
-	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ uId);
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getUserById Method >>>>>>>>>>>>>>>>>>>>>"+ bId);
 	//var name = params.useremail ;
 	model.userDetail.find({ building_id : bId }, function(err, data){
     	if(err) {

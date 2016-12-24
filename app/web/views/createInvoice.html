@@ -1,12 +1,29 @@
 <!-- start page -->
 <!-- <div ng-controller = "IndexCtrl" > -->
 <div id="page-wrapper">
-	<div> 
+	<div class="page-header">	
+		<h3>Defined Bill Structure</h3>
+		<div>
+			<span  ng-if="defaultInvoice == null">Not yet added any Bill Struture <a href="" ng-click="defineBill()">Create Bill Template</a></span>
+			<table class="table table-border table-stripped table-hover table-condensed" ng-show="defaultInvoice">
+				<thead>
+					<tr>
+						<th>Content</th>
+						<th>charges</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat = 'term in defaultInvoice'>
+						<td> {{ term.content }} </td>
+						<td> {{ term.charge }} </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
 	</div>
-	<!-- <div class="page-header" >
-		<h2>{{ pageHeader }}</h2>
-	</div> -->
+	</br>
+	<h3>Invoices for this Month</h3>
 	<div class="table-responsive " >
 		<table class="table table-border table-stripped table-hover table-condensed">
 			<thead>
@@ -62,7 +79,7 @@
 			</tbody>
 			<tbody ng-if="contacts.length < 1">
 				<tr >
-					<td>No Records available</td>
+					<td colspan="5">No Invoices available for this month. Please generate.</td>
 				</tr>
 				
 			</tbody>
@@ -70,7 +87,7 @@
 	</div>
 	
 	<div>
-		<a href="#/generateBill" class="btn btn-info btn-xs pull-right">Generate Bill</a>
+		<button class="btn btn-info btn-xs pull-right" ng-click="createAndSaveInvioces()" ng-disabled="contacts.length > 0">Generate Bill</button>
 		<!-- <a href="#/" class="btn btn-info btn-xs pull-right">Prev</a> -->
 	</div>
 </div>
