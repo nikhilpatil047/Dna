@@ -62,7 +62,9 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
             if (data.payload.status === "ERROR") {
             	$scope.resTxt = data.payload.responseBody.message;
             }else {
+            	$scope.dialogHdl.close();
             	$scope.resTxt = "Created default bill structure successfully.";
+
             }
         });
 	}
@@ -87,6 +89,26 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 	$scope.getContacts();
 
 	$scope.generatedInvoices = [];
+	$scope.getInvoiceDataForMonth = function(){
+		var userData = {
+		  "header": {
+	      },
+	      "payload": {
+	        "bId" : $scope.user.buildingId,
+	        "month": new Date().getMonth() + "/" + new Date().getFullYear()
+			} 
+		};
+
+		HttpCommunicationUtil.doPost('/getTaxInvoicesByBuilding', userData,function(data, status) {
+            if (data.payload.status === "ERROR") {
+            	$scope.resTxt = data.payload.responseBody.message;
+            }else {
+            	$scope.generatedInvoices = data.payload.responseBody.data;
+            }
+        });
+	}
+	$scope.getInvoiceDataForMonth();
+	
 	$scope.createAndSaveInvioces = function(){
 		var generatedInvoices = []
 		angular.forEach($scope.contacts, function(user){
@@ -103,7 +125,7 @@ app.controller('createInvoiceController',function($scope, $cookies, $location, $
 	      },
 	      "payload": {
 	        "bId" : $scope.user.buildingId,
-	        "month": new Date().getMonth(),
+	        "month": new Date().getMonth() + "/" + new Date().getFullYear(),
 	        "invoices": generatedInvoices
 			} 
 		};

@@ -364,6 +364,25 @@ function getInvoicesByBuilding(id, callback) {
  	}); 
 };
 
+//To fetch Tax invoices for building for current month
+function getInviocesForMonth(id, month,  callback) {
+	logger.debug("<<<<<<<<<<<<<<<<<<< In getInviocesForMonth Method >>>>>>>>>>>>>>>>>>>>>");
+	//var name = params.useremail ;
+	model.taxInvoice.find({building_id : id, month: month}, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+    		logger.debug(">>>>>>>>>>>>>>>>> data <<<<<<<<<<<<<<<<< " + JSON.stringify(data));
+    		callback(null,data);
+    	}
+ 	}); 
+};
+
 module.exports.signup = signup;
 module.exports.userLogin = userLogin;
 module.exports.logout = logout;
@@ -379,3 +398,4 @@ module.exports.updateTaxDetails = updateTaxDetails;
 module.exports.saveTaxDetail = saveTaxDetail;
 module.exports.saveTaxInvoices = saveTaxInvoices;
 module.exports.getInvoicesByBuilding = getInvoicesByBuilding;
+module.exports.getInviocesForMonth = getInviocesForMonth;

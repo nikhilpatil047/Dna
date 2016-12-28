@@ -1177,7 +1177,7 @@ function fetchInviocesForBuilding(requestParam, response) {
 			},
 			
 			function getInviocesForBuilding(req, authenticateCallback) {										
-				userService.getInviocesByBuilding(req.bId, function(err,resultSet) {
+				userService.getInviocesForMonth(req.bId, req.month, function(err,resultSet) {
 					if(err){
 						authenticateCallback(err, null);
 					} else{
