@@ -38,91 +38,23 @@
 			</div>
 			<!-- <i class="fa fa-user"></i> -->
 			<div class="form-group">
-				<input class="form-control" placeholder="Password" id="password" type="password" value="">
+				<input class="form-control" placeholder="Password" id="password" value="" type="password" value="">
 			</div>
 			<!-- <i class="fa fa-key"></i> -->
 			<a href="#">Forgot your password?</a>
-			<a href="" onclick="login(event)">
-			<!-- <button> -->
+			<!-- <a href="" onclick="login(event)"> -->
+			<button class="login">
+			<!-- <button type="button" onclick="login(event)"> -->
+				<i class="spinner"></i>
 				<span class="state">Log in</span>
-			<!-- </button> -->
-			</a>
-			</form>
-			<footer><a href="./views/registration.html">Register</a></footer>
-		</p>
+				<!-- <span class="state">Log in</span> -->
+			</button>
+			<!-- </a> -->
+		</form>
+		<footer><a href="./views/registration.html">Register</a></footer>
 	</div>
-	<script type="text/javascript">
-		function login(event) {
-			var authdata = {
-				  "header": {
-				  },
-				  "payload": {
-					"userName" : $("#username")[0].value,
-					"password": $("#password")[0].value
-					}
-				};
-			$.ajax({
-				type : 'POST',
-				url : '/login',
-				data : JSON.stringify(authdata), // '{"name":"' + model.name + '"}',
-				dataType : 'text',
-				processData : false,
-				contentType : 'application/json',
-				success : successCB,
-				error : errorCB,
-				timeout : 5000
-			});
-			event.preventDefault();
-		};
-		function successCB(data, status, header) {
-			console.log(header);
-			var data = JSON.parse(data);
-			if(data.payload.status == 'ERROR'){
-				//alert(data.payload.responseBody.message);
-				$("#errorMsg")[0].innerHTML = "<small class='redTxt'>"+data.payload.responseBody.message+"</small>";
-				$("#username")[0].value = '';
-				$("#password")[0].value = '';
-			}else {
-				var obj = {};
-				obj.sessionId = data.payload.session.sessionId;
-				obj.user = data.payload.responseBody.userDetails;
-				obj.user.userName = data.payload.session.username;
-				var expireDate = new Date();
-  				expireDate.setDate(expireDate.getDate() + 15);	
-  				var expire = 'expires'+ '=' + expireDate;		
-				document.cookie ='session' + '=' + JSON.stringify(obj) + ';' + expire;
-				window.location = 'application.html';
-			}
-		};
-		function errorCB(res, status, ex) {
-			var message;
-			var myStatusErrorMap = {
-				'400' : "Server understood the request but request content was invalid.",
-				'401' : "Invalid Username or Password. Please Try Again.",
-				'403' : "Forbidden resouce can't be accessed.",
-				'500' : "Internal Server Error.",
-				'503' : "Service Unavailable."
-			};
-			if (res.status) {
-				message =myStatusErrorMap[res.status];
-				if(!message){
-					message="Unknown Error " + ex;
-				}
-			}else if(ex=='timeout'){
-				message="Request Timed out. Unable to contact Authentication Server.";
-			}else if(ex=='abort'){
-				message="Request was aborted by the server.";
-			}else {
-				message="Invalid Username or Password " + ex + ", " + status ;
-			}
-			//console.log(res);
-			console.log(message);
-			$("#errorMsg")[0].innerHTML = message;
-			$("#password")[0].value = "";
-		};
-	</script>
-
 	<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="../js/loginPage.js"></script>
 	
 </body>
 </html>
