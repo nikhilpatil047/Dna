@@ -27,7 +27,7 @@ app.controller('registrationCtrl',function($scope, $cookies, $location, $rootSco
 	      "header": {
 	      },
 	      "payload": {
-	        "username" : newForm.username ,		
+	        "username" : newForm.username.toLowerCase() ,		
 			"password": newForm.password,
 			"profilephoto": null,
 			"usertype": newForm.usertype,

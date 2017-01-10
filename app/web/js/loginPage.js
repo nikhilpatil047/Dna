@@ -26,7 +26,7 @@ function login(event)
         {},
         "payload":
         {
-            "userName": $("#username")[0].value,
+            "userName": $("#username")[0].value.toLowerCase(),
             "password": $("#password")[0].value
         }
     };

@@ -43,42 +43,62 @@ function signup(req, res, callback) {
 	logger.info('<<<<<<<<<<<<<<' + SERVICE_NAME +"<<<<START>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 	logger.debug("Rquest : " + JSON.stringify(req));
 	
-	// calling encryptPassword method.	
-	var password = encryptPassword(req.password); 
+	// Checking if already user with same Email.
+	model.Users.findOne({ username : req.username }, function(err, data){
+    	if(err) {
+    		logger.error(err.message);
+    		var errorMessage = {
+						"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+						"message" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_MESSAGE
+					}	
+    		callback(errorMessage,null);
+    	} else {
+	    	if(data) {
+	    		var errorMessage = {
+							"code" : appUtils.getErrorMessage("ERROR_IN_DATABASE_OPERATION").ERROR_CODE,
+							"message" : "User With Email Already Registered."
+						}
+	    		return callback(errorMessage, null);
+	    	} else {
+				// calling encryptPassword method.	
+				var password = encryptPassword(req.password); 
 
-	// Initializing variables from request body and setting default values.
-	var document = {
-		username : req.username || null ,		
-		password : password,
-		profile_photo : null,
-		user_type: req.usertype,
-		building_name: req.buildingname || null,
-		building_id: req.building_id || null,
-		address: req.address,
-		security_question: req.securityquestion || null,
-		notificationTypes : {
-			forgotPassword : true
-		},		
-		created_date : new Date() || null
-	}
+				// Initializing variables from request body and setting default values.
+				var document = {
+					username : req.username || null ,		
+					password : password,
+					profile_photo : null,
+					user_type: req.usertype,
+					building_name: req.buildingname || null,
+					building_id: req.building_id || null,
+					address: req.address,
+					security_question: req.securityquestion || null,
+					notificationTypes : {
+						forgotPassword : true
+					},		
+					created_date : new Date() || null
+				}
 
-	//here passing document to compare it with specified schema in db.js file
-	var user ;
-	try {
-		user = model.Users(document);
-		saveUser(user,function(err,id) {
-		 	if(err) {
-				callback(err);
-		 	}else if(id)	{
-		 		return callback(null, constants.REGISTRATION_SUCCESS_RESP);
-		 	}				 	
-		});
-		
-	}
-	catch(error) {
-		logger.error("User data not inserted" + error);
-		return callback(error,null);
-	}
+				//here passing document to compare it with specified schema in db.js file
+				var user ;
+				try {
+					user = model.Users(document);
+					saveUser(user,function(err,id) {
+					 	if(err) {
+							callback(err);
+					 	}else if(id)	{
+					 		return callback(null, constants.REGISTRATION_SUCCESS_RESP);
+					 	}				 	
+					});
+					
+				}
+				catch(error) {
+					logger.error("User data not inserted" + error);
+					return callback(error,null);
+				}
+			}
+		}
+	});
 	logger.info('<<<<<<<<<<<<<<' + SERVICE_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
 
