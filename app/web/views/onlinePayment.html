@@ -1,25 +1,24 @@
 
 <div id="page-wrapper">
-		<form class="login">
-			<p class="title">Log in</p>
-			<div id="errorMsg"></div>
-
-			<div class="form-group">
-				<input class="form-control" placeholder="User Email" id="username" type="text" autofocus>
-			</div>
-			<!-- <i class="fa fa-user"></i> -->
-			<div class="form-group">
-				<input class="form-control" placeholder="Password" id="password" value="" type="password" value="">
-			</div>
-			<!-- <i class="fa fa-key"></i> -->
-			<a href="#">Forgot your password?</a>
-			<!-- <a href="" onclick="login(event)"> -->
-			<button class="login">
-			<!-- <button type="button" onclick="login(event)"> -->
-				<i class="spinner"></i>
-				<span class="state">Log in</span>
-				<!-- <span class="state">Log in</span> -->
-			</button>
-			<!-- </a> -->
-		</form>
+		<div class="row">
+        <div class="col-lg-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <i class="fa fa-user fa-fw"></i> Payment
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <tr>
+                            <td><label>Amount : </label></td>
+                            <td><input class="form-control" type="text" id="amount"></td>
+                        </tr>
+                    </table>
+                    <br>
+                    <button type="submit" ng-click="payVia()" class="btn btn-primary">Submit</button>&nbsp;
+                    <button class="btn btn-primary">Cancel</button>
+            </div>
+            </div>
+		</div>
+        <!-- /.col-lg-8 -->
+    </div>
 </div>
