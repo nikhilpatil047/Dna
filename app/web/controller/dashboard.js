@@ -43,7 +43,7 @@ app.controller('dashboardController',function($scope, $cookies, $location, $root
 		$scope.timestate = $scope.hours > 12 ? "pm" : "am";
 		$scope.time = $scope.hours+"."+$scope.minutes+" "+$scope.timestate;//$scope.dateObj.getTime();
 
-		console.log($scope.time);
+		//console.log($scope.time);
 		$scope.chat.push({
 			date:$scope.today,	
 			time:$scope.time,	

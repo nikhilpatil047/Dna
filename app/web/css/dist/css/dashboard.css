@@ -123,3 +123,22 @@
   font-family: Verdana;
   position: relative;
 }
+
+.welcomeSpan
+{
+  width: 50%;
+  padding: 20px;
+  float: left;
+  height: 90px;
+  margin-bottom: 20px;
+}
+
+.welcome_panel .left
+{
+
+}
+
+.welcome_panel .right
+{
+  background: url("../../../res/images/goodMorning_Icon.png");
+}

@@ -6,9 +6,9 @@ app.config(['$routeProvider',
 
   	function($routeProvider) {
 	  	$routeProvider.
-  		when('/invoices', {
-	      templateUrl: 'views/invoice.html' ,
-	      controller: 'invoiceController' 
+  		when('/reports', {
+	      templateUrl: 'views/reports.html' ,
+	      controller: 'reportsController' 
 	    }).
 	    when('/createInvoices', {
 	      templateUrl: 'views/createInvoice.html' ,
@@ -26,10 +26,6 @@ app.config(['$routeProvider',
 	      templateUrl: 'views/tables.html' ,
 	      controller: 'tablesController' 
 	    }).
-	    when('/flot', {
-	      templateUrl: 'views/flot.html' ,
-	      controller: 'flotController' 
-	    }).
 	    when('/registration', {
 	      templateUrl: 'views/registration.html' ,
 	      controller: 'registrationCtrl' 
@@ -37,12 +33,42 @@ app.config(['$routeProvider',
 	    when('/morris', {
 	      templateUrl: 'views/morris.html' ,
 	      controller: 'morrisController' 
-	    }).when('/settings', {
+	    }).
+	    when('/settings', {
 			templateUrl : 'views/settings.html',
 	    	controller: 'settingsController' 
-		}).when('/profile', {
+		}).
+		when('/profile', {
 	      templateUrl: 'views/profile.html' ,
 	      controller: 'profileController' 
+	    }).
+	    when('/help', {
+	      templateUrl: 'views/help.html' ,
+	      controller: 'helpController' 
+	    }).
+	    when('/FAQ', {
+	      templateUrl: 'views/faq.html' ,
+	      controller: 'faqController' 
+	    }).
+	    when('/security', {
+	      templateUrl: 'views/security.html' ,
+	      controller: 'securityController' 
+	    }).
+	    when('/vendor', {
+	      templateUrl: 'views/vendor.html' ,
+	      controller: 'vendorController' 
+	    }).
+	    when('/Asset', {
+	      templateUrl: 'views/asset.html' ,
+	      controller: 'assetController' 
+	    }).
+	    when('/docSetup', {
+	      templateUrl: 'views/docSetup.html' ,
+	      controller: 'documentSetupController' 
+	    }).
+	    when('/onlinePayment', {
+	      templateUrl: 'views/onlinePayment.html' ,
+	      controller: 'onlinePaymentController' 
 	    })
 	    .when('/logout', {
 		templateUrl : '/index.html',

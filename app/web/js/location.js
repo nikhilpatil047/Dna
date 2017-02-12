@@ -4,6 +4,7 @@ $(document).ready(function()
 	initialize();
 	clockon();
 	progress.init();
+	createWelcomePanel();
 
 	$.simpleWeather({
 	    location: 'Mumbai, MH',
@@ -27,6 +28,24 @@ $(document).ready(function()
     	}
   	});  
 	//========================================================================
+	function createWelcomePanel()
+	{
+		var hours = new Date().getHours();
+		var welcomeString = "";
+		var imgClass = "";
+		//imgClass = "right";
+		if(hours < 12)
+		{
+			welcomeString = "Good Morning Durvesh";
+			imgClass = "right";
+		}
+		else
+		{
+			welcomeString = "Hello Durvesh";
+		}
+		$(".welcome_panel").html('<span class="welcomeSpan left"><h1>'+welcomeString+'</h1></span><span class="welcomeSpan '+imgClass+'"></span>');
+	}
+	//========================================================================
 	function clockon() 
 	{
 		thistime = new Date()
@@ -48,7 +67,7 @@ $(document).ready(function()
 		thistime = hours+":"+minutes+":"+seconds
 		// bgclocknoshade.innerHTML = thistime
 		$("#bgclockshade").html(thistime);
-		var timer = setTimeout(clockon,200)
+		var timer = setTimeout(clockon,200);
 	}
 	//========================================================================
 	function voting_chart()

@@ -7,7 +7,6 @@ var _invoice = function()
 	
 	this.init = function()
 	{
-		console.log("here");
 		creatHeader();
 		createTable();
 	}	
