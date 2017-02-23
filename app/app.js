@@ -5,6 +5,7 @@
 /* jshint node: true */
 'use strict';
 var express = require('express');
+var paypal = require('paypal-rest-sdk');
 var bodyParser = require('body-parser');
 var config = require('./config/config.js');
 var router = require('./router/router.js');
@@ -36,6 +37,8 @@ var allowCrossDomain = function(req, res, next) {
       next();
 };
 app.use(allowCrossDomain);
+
+paypal.configure(config.api);
 
 // Session middleware
 app.use(session({

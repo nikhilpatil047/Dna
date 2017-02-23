@@ -4,6 +4,7 @@
 */
 var express = require('express');
 var router = express.Router();
+var paypal = require('paypal-rest-sdk');
 var responseUtils = require('../utils/responseUtils.js');
 var validationUtils = require('../utils/validationUtils.js');
 var jsonUtils = require('../utils/jsonUtils.js');
@@ -1292,4 +1293,54 @@ function fetchInviocesForUser(requestParam, response) {
 	}
 	logger.info('<<<<<<<<<<<<<<' + CONTROLLER_NAME +"<<<<END>>>>"+ METHOD_NAME + '>>>>>>>>>>>>>>>>>>>>>>>');
 };
+
+// Page will display after payment has beed transfered successfully
+router.get('/success', function(req, res) {
+  res.send("Payment transfered successfully.");
+});
+ 
+// Page will display when you canceled the transaction 
+router.get('/cancel', function(req, res) {
+  res.send("Payment canceled successfully.");
+});
+
+router.post('/paynow', function(req, res) {
+   // paypal payment configuration.
+  	var payment = {
+	  "intent": "sale",
+	  "payer": {
+	    "payment_method": "paypal"
+	  },
+	  "redirect_urls": {
+	    "return_url": app.locals.baseurl+"/success",
+	    "cancel_url": app.locals.baseurl+"/cancel"
+	  },
+	  "transactions": [{
+	    "amount": {
+	      "total":parseInt(req.body.amount),
+	      "currency":  req.body.currency
+	    },
+	    "description": req.body.description
+	  }]
+	};
+ 
+	  paypal.payment.create(payment, function (error, payment) {
+	  if (error) {
+	    console.log(error);
+	  } else {
+	    if(payment.payer.payment_method === 'paypal') {
+	      req.paymentId = payment.id;
+	      var redirectUrl;
+	      console.log(payment);
+	      for(var i=0; i < payment.links.length; i++) {
+	        var link = payment.links[i];
+	        if (link.method === 'REDIRECT') {
+	          redirectUrl = link.href;
+	        }
+	      }
+	      res.redirect(redirectUrl);
+	    }
+	  }
+	});
+});
 module.exports = router;
